@@ -1,0 +1,46 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
+import SocialLinks from '@/components/SocialLinks';
+
+export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="py-12 px-6 bg-background border-t border-border/10">
+      <div className="container max-w-4xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mb-6 md:mb-0"
+          >
+            <h2 className="text-2xl font-bold tracking-tighter">
+              Nabaraj<span className="text-primary">.</span>
+            </h2>
+            <p className="text-sm text-foreground/60 mt-2">
+              Full Stack Developer
+            </p>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex flex-col items-center md:items-end"
+          >
+            <SocialLinks />
+            <p className={cn(
+              "text-sm text-foreground/50 mt-6",
+              "before:content-['©'] before:mr-2"
+            )}>
+              {currentYear} Nabaraj Basnet. All rights reserved.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    </footer>
+  );
+}
