@@ -1,5 +1,6 @@
 'use client';
 
+import TargetCursor from '../components/common/TargetCursor'
 import { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -55,6 +56,11 @@ export default function Home() {
     <SmoothScroll>
       <Navbar currentSection={currentSection} />
       <main className="relative">
+        <TargetCursor
+          spinDuration={2}
+          hideDefaultCursor={true}
+          parallaxOn={true}
+        />
         <Hero />
         <About />
         <Skills />
