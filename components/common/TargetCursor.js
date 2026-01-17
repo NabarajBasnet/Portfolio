@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useRef, useCallback, useMemo, useState } from 'react';
 import { gsap } from 'gsap';
 
@@ -32,14 +34,14 @@ const TargetCursor = ({
     }, [isLocked]);
 
     // Create energy particles
-    const createParticle = useCallback((x, y, color = '#00f0ff') => {
+    const createParticle = useCallback((x, y, color = '#ef4444') => {
         const particle = document.createElement('div');
         particle.style.cssText = `
             position: fixed;
             pointer-events: none;
             z-index: 9998;
-            width: 4px;
-            height: 4px;
+            width: 2px;
+            height: 2px;
             background: ${color};
             border-radius: 50%;
             box-shadow: 0 0 10px ${color}, 0 0 20px ${color};
@@ -117,7 +119,7 @@ const TargetCursor = ({
 
             // Random particle generation while moving
             if (Math.random() > 0.85) {
-                createParticle(e.clientX, e.clientY, '#00f0ff');
+                createParticle(e.clientX, e.clientY, '#ef4444');
             }
         };
         window.addEventListener('mousemove', moveHandler);
@@ -137,7 +139,7 @@ const TargetCursor = ({
             const y = gsap.getProperty(cursorRef.current, 'y');
             for (let i = 0; i < 12; i++) {
                 setTimeout(() => {
-                    createParticle(x, y, '#ff00aa');
+                    createParticle(x, y, '#dc2626');
                 }, i * 20);
             }
 
@@ -174,7 +176,7 @@ const TargetCursor = ({
             const x = gsap.getProperty(cursorRef.current, 'x');
             const y = gsap.getProperty(cursorRef.current, 'y');
             for (let i = 0; i < 20; i++) {
-                createParticle(x, y, '#00ffaa');
+                createParticle(x, y, '#f87171');
             }
         };
 
@@ -218,7 +220,7 @@ const TargetCursor = ({
             const x = gsap.getProperty(cursorRef.current, 'x');
             const y = gsap.getProperty(cursorRef.current, 'y');
             for (let i = 0; i < 16; i++) {
-                createParticle(x, y, '#ffaa00');
+                createParticle(x, y, '#ef4444');
             }
 
             const leaveHandler = () => {
@@ -294,7 +296,7 @@ const TargetCursor = ({
                 style={{ willChange: 'transform' }}
             >
                 {/* Main hexagon */}
-                <svg width="40" height="40" viewBox="0 0 40 40" className="drop-shadow-[0_0_10px_rgba(0,240,255,0.6)]">
+                <svg width="24" height="24" viewBox="0 0 40 40" className="drop-shadow-[0_0_8px_rgba(239,68,68,0.6)]">
                     <polygon
                         points="20,2 35,11 35,29 20,38 5,29 5,11"
                         fill="none"
@@ -304,15 +306,15 @@ const TargetCursor = ({
                     />
                     <polygon
                         points="20,6 31,13 31,27 20,34 9,27 9,13"
-                        fill="rgba(0,240,255,0.1)"
-                        stroke="rgba(0,240,255,0.3)"
+                        fill="rgba(239,68,68,0.1)"
+                        stroke="rgba(239,68,68,0.3)"
                         strokeWidth="1"
                     />
                     <defs>
                         <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#00f0ff" />
-                            <stop offset="50%" stopColor="#ff00aa" />
-                            <stop offset="100%" stopColor="#00ffaa" />
+                            <stop offset="0%" stopColor="#ef4444" />
+                            <stop offset="50%" stopColor="#dc2626" />
+                            <stop offset="100%" stopColor="#f87171" />
                         </linearGradient>
                     </defs>
                 </svg>
@@ -321,9 +323,9 @@ const TargetCursor = ({
                 {[0, 60, 120, 180, 240, 300].map((angle, i) => (
                     <div
                         key={i}
-                        className="absolute top-1/2 left-1/2 w-1.5 h-1.5 bg-cyan-400 rounded-full shadow-[0_0_6px_#00f0ff]"
+                        className="absolute top-1/2 left-1/2 w-1 h-1 bg-red-500 rounded-full shadow-[0_0_4px_#ef4444]"
                         style={{
-                            transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-18px)`,
+                            transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-11px)`,
                         }}
                     />
                 ))}
@@ -331,16 +333,16 @@ const TargetCursor = ({
 
             {/* Center dot with energy */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                <div className={`w-3 h-3 rounded-full ${isCharging ? 'bg-pink-500' : 'bg-cyan-400'} shadow-[0_0_15px_currentColor] transition-colors duration-200`} />
+                <div className={`w-2 h-2 rounded-full ${isCharging ? 'bg-red-700' : 'bg-red-500'} shadow-[0_0_10px_currentColor] transition-colors duration-200`} />
             </div>
 
             {/* Scan line */}
             <div
                 ref={scanLineRef}
-                className="absolute top-1/2 left-1/2 w-32 h-0.5 -translate-x-1/2 -translate-y-1/2 opacity-30"
+                className="absolute top-1/2 left-1/2 w-20 h-0.5 -translate-x-1/2 -translate-y-1/2 opacity-30"
                 style={{
-                    background: 'linear-gradient(90deg, transparent, #00f0ff, transparent)',
-                    boxShadow: '0 0 10px #00f0ff'
+                    background: 'linear-gradient(90deg, transparent, #ef4444, transparent)',
+                    boxShadow: '0 0 8px #ef4444'
                 }}
             />
 
@@ -349,12 +351,12 @@ const TargetCursor = ({
                 <div
                     key={i}
                     ref={el => energyRingsRef.current[i] = el}
-                    className="absolute top-1/2 left-1/2 rounded-full border border-cyan-400/30"
+                    className="absolute top-1/2 left-1/2 rounded-full border border-red-500/30"
                     style={{
-                        width: '30px',
-                        height: '30px',
+                        width: '18px',
+                        height: '18px',
                         transform: 'translate(-50%, -50%)',
-                        boxShadow: '0 0 10px rgba(0,240,255,0.3)'
+                        boxShadow: '0 0 8px rgba(239,68,68,0.3)'
                     }}
                 />
             ))}
@@ -376,25 +378,25 @@ const TargetCursor = ({
                         transformOrigin: 'center'
                     }}
                 >
-                    <svg width="20" height="20" viewBox="0 0 20 20">
+                    <svg width="12" height="12" viewBox="0 0 20 20">
                         <path
                             d="M0,0 L15,0 L15,2 L2,2 L2,15 L0,15 Z"
-                            fill="#ff00aa"
-                            className="drop-shadow-[0_0_6px_rgba(255,0,170,0.8)]"
+                            fill="#ef4444"
+                            className="drop-shadow-[0_0_4px_rgba(239,68,68,0.8)]"
                         />
                     </svg>
                 </div>
             ))}
 
             {/* Outer grid circle */}
-            <div className="absolute top-1/2 left-1/2 w-20 h-20 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-cyan-400/20 animate-spin-slow" style={{ animationDuration: '12s' }} />
+            <div className="absolute top-1/2 left-1/2 w-12 h-12 -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-red-500/20 animate-spin-slow" style={{ animationDuration: '12s' }} />
 
             {/* Tech elements */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 {[0, 90, 180, 270].map((angle, i) => (
                     <div
                         key={i}
-                        className="absolute w-8 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent"
+                        className="absolute w-5 h-0.5 bg-gradient-to-r from-transparent via-red-500/40 to-transparent"
                         style={{
                             transform: `rotate(${angle}deg)`,
                             transformOrigin: 'center'
