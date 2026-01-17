@@ -29,20 +29,24 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
-                onClick={() =>
-                  window.open("https://www.fitbinary.com/", "_blank")
-                }
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    window.open("https://www.fitbinary.com/", "_blank");
+                  }
+                }}
                 className="cursor-target px-8 py-4 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-colors shadow-lg shadow-red-600/20"
               >
                 View Projects
               </button>
               <button
-                onClick={() =>
-                  window.open(
-                    "https://www.linkedin.com/in/nabaraj-basnet-1b9216248/",
-                    "_blank",
-                  )
-                }
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    window.open(
+                      "https://www.linkedin.com/in/nabaraj-basnet-1b9216248/",
+                      "_blank",
+                    );
+                  }
+                }}
                 className="cursor-target px-8 py-4 bg-white text-red-600 font-semibold rounded-lg border-2 border-red-600 hover:bg-red-50 transition-colors"
               >
                 Contact Me

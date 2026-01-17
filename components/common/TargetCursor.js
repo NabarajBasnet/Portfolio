@@ -16,11 +16,14 @@ const TargetCursor = ({
     const targetIndicatorsRef = useRef([]);
     const [isLocked, setIsLocked] = useState(false);
     const [isCharging, setIsCharging] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
-    const isMobile = useMemo(() => {
-        const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        const isSmallScreen = window.innerWidth <= 768;
-        return hasTouchScreen && isSmallScreen;
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            const isSmallScreen = window.innerWidth <= 768;
+            setIsMobile(hasTouchScreen && isSmallScreen);
+        }
     }, []);
 
     const moveCursor = useCallback((x, y) => {
