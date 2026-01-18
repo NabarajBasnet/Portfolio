@@ -30,7 +30,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => {
-                  if (typeof window !== 'undefined') {
+                  if (typeof window !== "undefined") {
                     window.open("https://www.fitbinary.com/", "_blank");
                   }
                 }}
@@ -40,7 +40,7 @@ export default function Home() {
               </button>
               <button
                 onClick={() => {
-                  if (typeof window !== 'undefined') {
+                  if (typeof window !== "undefined") {
                     window.open(
                       "https://www.linkedin.com/in/nabaraj-basnet-1b9216248/",
                       "_blank",
@@ -63,7 +63,7 @@ export default function Home() {
             }}
           >
             <div
-              style={{ height: "100%", overflowY: "auto", paddingTop: "4rem" }}
+              style={{ height: "100%" }}
               className="border-t border-gray-200"
             >
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12">
