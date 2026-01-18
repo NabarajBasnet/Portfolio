@@ -20,7 +20,7 @@ export default function Footer() {
             <h2 className="text-2xl font-bold tracking-tighter text-gray-900">
               Nabaraj<span className="text-red-600">.</span>
             </h2>
-            <p className="text-sm text-gray-600 mt-2">Full Stack Developer</p>
+            <p className="text-sm text-gray-600 mt-2">Software Developer</p>
           </motion.div>
 
           <motion.div
