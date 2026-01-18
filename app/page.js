@@ -58,8 +58,6 @@ export default function Home() {
           <div
             style={{
               position: "relative",
-              height: "600px",
-              overflow: "hidden",
             }}
           >
             <div
