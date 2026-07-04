@@ -57,12 +57,12 @@ export default function ProjectsSection() {
   return (
     <section
       id="projects"
-      className="px-6 md:px-16 lg:px-24 py-24 border-b"
+      className="px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-24 border-b"
       style={{ borderColor: "var(--border)" }}
     >
       <div className="max-w-6xl mx-auto w-full">
         <motion.div
-          className="flex items-start gap-6 mb-16"
+          className="flex items-start gap-4 sm:gap-6 mb-10 sm:mb-16"
           initial="hidden"
           whileInView="visible"
           viewport={viewportOptions}
@@ -73,7 +73,7 @@ export default function ProjectsSection() {
           </span>
           <div>
             <h2
-              className="font-serif-heading text-[clamp(2rem,5vw,3.5rem)] leading-tight"
+              className="font-serif-heading text-[clamp(1.8rem,5vw,3.5rem)] leading-tight"
               style={{ color: "var(--fg)" }}
             >
               Selected Work
@@ -91,12 +91,16 @@ export default function ProjectsSection() {
           {projects.map((project, pi) => (
             <div
               key={project.id}
-              className="grid lg:grid-cols-[1fr_1.2fr] gap-0"
+              className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr]"
               style={{ borderBottom: "1px solid var(--border)" }}
             >
+              {/* Left panel */}
               <motion.div
-                className="p-8 lg:p-10 flex flex-col justify-between"
-                style={{ borderRight: "1px solid var(--border)" }}
+                className="p-6 sm:p-8 lg:p-10 flex flex-col justify-between gap-6"
+                style={{
+                  borderBottom: "1px solid var(--border)",
+                }}
+                // On desktop, right border separates the two columns
                 initial="hidden"
                 whileInView="visible"
                 viewport={viewportOptions}
@@ -104,7 +108,7 @@ export default function ProjectsSection() {
                 transition={{ delay: pi * 0.1 }}
               >
                 <div>
-                  <div className="flex items-center gap-3 mb-3">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
                     <span className="font-mono-label text-muted">
                       {project.year}
                     </span>
@@ -130,7 +134,7 @@ export default function ProjectsSection() {
                   </div>
 
                   <motion.h3
-                    className="font-serif-heading text-3xl md:text-4xl mb-1"
+                    className="font-serif-heading text-2xl sm:text-3xl md:text-4xl mb-1"
                     style={{ color: "var(--fg)" }}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -144,7 +148,7 @@ export default function ProjectsSection() {
                     {project.name}
                   </motion.h3>
                   <p
-                    className="font-serif-heading italic text-lg mb-6"
+                    className="font-serif-heading italic text-base sm:text-lg mb-4 sm:mb-6"
                     style={{ color: "var(--fg-muted)" }}
                   >
                     {project.subtitle}
@@ -172,8 +176,9 @@ export default function ProjectsSection() {
                 </motion.div>
               </motion.div>
 
+              {/* Right panel */}
               <motion.div
-                className="p-8 lg:p-10"
+                className="p-6 sm:p-8 lg:p-10"
                 initial="hidden"
                 whileInView="visible"
                 viewport={viewportOptions}
@@ -181,7 +186,7 @@ export default function ProjectsSection() {
                 transition={{ delay: pi * 0.1 + 0.05 }}
               >
                 <motion.div
-                  className="mb-6 pl-4"
+                  className="mb-5 sm:mb-6 pl-4"
                   style={{ borderLeft: "2px solid var(--accent)" }}
                   initial={{ opacity: 0, scaleY: 0, originY: 0 }}
                   whileInView={{ opacity: 1, scaleY: 1 }}
@@ -207,7 +212,7 @@ export default function ProjectsSection() {
                 </motion.div>
 
                 <motion.p
-                  className="text-sm leading-relaxed mb-6"
+                  className="text-sm leading-relaxed mb-5 sm:mb-6"
                   style={{ color: "var(--fg-muted)" }}
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -236,6 +241,7 @@ export default function ProjectsSection() {
                         style={{
                           color: "var(--accent)",
                           marginTop: "0.15em",
+                          flexShrink: 0,
                         }}
                       >
                         —

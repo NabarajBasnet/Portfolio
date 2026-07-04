@@ -41,12 +41,12 @@ export default function Footer() {
   return (
     <footer
       id="contact"
-      className="px-6 md:px-16 lg:px-24 py-20"
+      className="px-4 sm:px-6 md:px-16 lg:px-24 py-14 sm:py-20"
       style={{ borderTop: "1px solid var(--border)" }}
     >
       <div className="max-w-6xl mx-auto w-full">
         <motion.div
-          className="flex items-start gap-6 mb-16"
+          className="flex items-start gap-4 sm:gap-6 mb-10 sm:mb-16"
           initial="hidden"
           whileInView="visible"
           viewport={viewportOptions}
@@ -57,7 +57,7 @@ export default function Footer() {
           </span>
           <div>
             <h2
-              className="font-serif-heading text-[clamp(2rem,5vw,3.5rem)] leading-tight mb-3"
+              className="font-serif-heading text-[clamp(1.8rem,5vw,3.5rem)] leading-tight mb-3"
               style={{ color: "var(--fg)" }}
             >
               Hire or collaborate
@@ -74,7 +74,7 @@ export default function Footer() {
         </motion.div>
 
         <motion.div
-          className="grid md:grid-cols-2 gap-px mb-16"
+          className="grid grid-cols-1 md:grid-cols-2 gap-px mb-10 sm:mb-16"
           style={{
             border: "1px solid var(--border)",
             background: "var(--border)",
@@ -85,14 +85,14 @@ export default function Footer() {
           variants={staggerContainer}
         >
           <motion.div
-            className="px-8 py-6"
+            className="px-5 sm:px-8 py-5 sm:py-6"
             style={{ background: "var(--bg)" }}
             variants={staggerFadeUp}
           >
             <p className="font-mono-label text-muted mb-2">Direct contact</p>
             <motion.a
               href="mailto:nabarajbasnet2000@gmail.com"
-              className="font-serif-heading text-xl"
+              className="font-serif-heading text-base sm:text-xl break-all"
               style={{ color: "var(--fg)" }}
               whileHover={{ color: "var(--accent)" }}
               transition={{ duration: 0.2 }}
@@ -101,7 +101,7 @@ export default function Footer() {
             </motion.a>
           </motion.div>
           <motion.div
-            className="px-8 py-6"
+            className="px-5 sm:px-8 py-5 sm:py-6"
             style={{ background: "var(--bg)" }}
             variants={staggerFadeUp}
           >
@@ -114,7 +114,7 @@ export default function Footer() {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-px mb-16"
+          className="grid grid-cols-2 md:grid-cols-4 gap-px mb-10 sm:mb-16"
           style={{
             border: "1px solid var(--border)",
             background: "var(--border)",
@@ -130,7 +130,7 @@ export default function Footer() {
               href={s.href}
               target={s.href.startsWith("mailto") ? undefined : "_blank"}
               rel="noopener noreferrer"
-              className="px-6 py-5 flex flex-col gap-2"
+              className="px-4 sm:px-6 py-4 sm:py-5 flex flex-col gap-2"
               style={{ background: "var(--bg)" }}
               variants={staggerFadeUp}
               whileHover={{
@@ -141,7 +141,10 @@ export default function Footer() {
             >
               <span style={{ color: "var(--fg-muted)" }}>{s.icon}</span>
               <span className="font-mono-label text-muted">{s.label}</span>
-              <span className="text-xs" style={{ color: "var(--fg)" }}>
+              <span
+                className="text-xs truncate"
+                style={{ color: "var(--fg)" }}
+              >
                 {s.handle}
               </span>
             </motion.a>

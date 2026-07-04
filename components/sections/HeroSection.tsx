@@ -39,12 +39,12 @@ export default function HeroSection({ onViewProjects }: HeroSectionProps) {
     <section
       ref={sectionRef}
       id="top"
-      className="min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24 pt-32 pb-20 border-b overflow-hidden"
+      className="min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-16 lg:px-24 pt-28 sm:pt-32 pb-16 sm:pb-20 border-b overflow-hidden"
       style={{ borderColor: "var(--border)" }}
     >
       <div className="max-w-6xl mx-auto w-full">
         <motion.div
-          className="flex items-center gap-4 mb-10"
+          className="flex flex-wrap items-center gap-3 sm:gap-4 mb-8 sm:mb-10"
           initial="hidden"
           animate="visible"
           variants={fadeIn}
@@ -65,16 +65,16 @@ export default function HeroSection({ onViewProjects }: HeroSectionProps) {
           </span>
         </motion.div>
 
-        <div className="grid lg:grid-cols-[1fr_auto] gap-16 items-end">
+        <div className="grid lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 items-end">
           <motion.div style={{ y: contentY }}>
             <h1
-              className="font-serif-heading text-[clamp(3rem,8vw,6.5rem)] leading-[1.05] tracking-tight mb-8"
+              className="font-serif-heading text-[clamp(2.8rem,10vw,6.5rem)] leading-[1.05] tracking-tight mb-6 sm:mb-8"
               style={{ color: "var(--fg)" }}
             >
               {titleWords.map((word, wi) => (
                 <motion.span
                   key={word}
-                  className="block overflow-hidden"
+                  className="inline-block overflow-hidden align-bottom"
                   initial="hidden"
                   animate="visible"
                   variants={{
@@ -111,12 +111,15 @@ export default function HeroSection({ onViewProjects }: HeroSectionProps) {
                       {char}
                     </motion.span>
                   ))}
+                  {wi < titleWords.length - 1 && (
+                    <span className="inline-block">&nbsp;</span>
+                  )}
                 </motion.span>
               ))}
             </h1>
 
             <motion.p
-              className="text-base md:text-lg max-w-xl leading-relaxed mb-10"
+              className="text-sm sm:text-base md:text-lg max-w-xl leading-relaxed mb-8 sm:mb-10"
               style={{ color: "var(--fg-muted)" }}
               initial="hidden"
               animate="visible"
@@ -124,8 +127,8 @@ export default function HeroSection({ onViewProjects }: HeroSectionProps) {
               transition={{ delay: 0.55 }}
             >
               Full-stack software developer building scalable microservices and
-              production-grade web applications. I care about clean
-              architecture, reliable systems, and shipping software that works.
+              production-grade web applications. I care about clean architecture,
+              reliable systems, and shipping software that works.
             </motion.p>
 
             <motion.div
@@ -158,16 +161,16 @@ export default function HeroSection({ onViewProjects }: HeroSectionProps) {
             </motion.div>
           </motion.div>
 
+          {/* Stat block — full width row on mobile, sidebar on desktop */}
           <motion.div
             style={{ y: statY }}
-            className="grid grid-cols-2 gap-px lg:grid-cols-1 lg:gap-0 lg:w-52"
             initial="hidden"
             animate="visible"
             variants={slideInRight}
             transition={{ delay: 0.4 }}
-            custom={0}
           >
             <div
+              className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-1 gap-px mt-10 lg:mt-0 lg:w-52"
               style={{
                 border: "1px solid var(--border)",
                 background: "var(--border)",
@@ -176,7 +179,7 @@ export default function HeroSection({ onViewProjects }: HeroSectionProps) {
               {stats.map((s, i) => (
                 <motion.div
                   key={s.label}
-                  className="px-5 py-4"
+                  className="px-4 sm:px-5 py-3 sm:py-4"
                   style={{ background: "var(--bg)" }}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -187,7 +190,7 @@ export default function HeroSection({ onViewProjects }: HeroSectionProps) {
                   }}
                 >
                   <motion.div
-                    className="font-serif-heading text-3xl mb-0.5"
+                    className="font-serif-heading text-2xl sm:text-3xl mb-0.5"
                     style={{ color: "var(--accent)" }}
                     initial={{ opacity: 0, scale: 0.7 }}
                     animate={{ opacity: 1, scale: 1 }}

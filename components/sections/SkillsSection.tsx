@@ -76,12 +76,12 @@ export default function SkillsSection() {
   return (
     <section
       id="skills"
-      className="px-6 md:px-16 lg:px-24 py-24 border-b"
+      className="px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-24 border-b"
       style={{ borderColor: "var(--border)" }}
     >
       <div className="max-w-6xl mx-auto w-full">
         <motion.div
-          className="flex items-start gap-6 mb-16"
+          className="flex items-start gap-4 sm:gap-6 mb-10 sm:mb-16"
           initial="hidden"
           whileInView="visible"
           viewport={viewportOptions}
@@ -92,7 +92,7 @@ export default function SkillsSection() {
           </span>
           <div>
             <h2
-              className="font-serif-heading text-[clamp(2rem,5vw,3.5rem)] leading-tight"
+              className="font-serif-heading text-[clamp(1.8rem,5vw,3.5rem)] leading-tight"
               style={{ color: "var(--fg)" }}
             >
               Technical Skills
@@ -104,14 +104,11 @@ export default function SkillsSection() {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-x divide-y"
-          style={
-            {
-              borderTop: "1px solid var(--border)",
-              borderLeft: "1px solid var(--border)",
-              "--tw-divide-opacity": 1,
-            } as React.CSSProperties
-          }
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          style={{
+            borderTop: "1px solid var(--border)",
+            borderLeft: "1px solid var(--border)",
+          }}
           initial="hidden"
           whileInView="visible"
           viewport={viewportOptions}
@@ -120,7 +117,7 @@ export default function SkillsSection() {
           {skillGroups.map((group) => (
             <motion.div
               key={group.index}
-              className="p-6 lg:p-8"
+              className="p-5 sm:p-6 lg:p-8"
               style={{
                 borderRight: "1px solid var(--border)",
                 borderBottom: "1px solid var(--border)",
@@ -132,7 +129,7 @@ export default function SkillsSection() {
                 transition: { duration: 0.2 },
               }}
             >
-              <div className="flex items-center gap-3 mb-5">
+              <div className="flex items-center gap-3 mb-4 sm:mb-5">
                 <motion.span
                   className="font-mono-label"
                   style={{ color: "var(--accent)" }}
@@ -144,7 +141,7 @@ export default function SkillsSection() {
                   {group.index}
                 </motion.span>
                 <h3
-                  className="font-serif-heading text-lg"
+                  className="font-serif-heading text-base sm:text-lg"
                   style={{ color: "var(--fg)" }}
                 >
                   {group.category}
@@ -152,7 +149,7 @@ export default function SkillsSection() {
               </div>
 
               <motion.ul
-                className="space-y-3"
+                className="space-y-2 sm:space-y-3"
                 initial="hidden"
                 whileInView="visible"
                 viewport={viewportOptions}
@@ -161,13 +158,18 @@ export default function SkillsSection() {
                 {group.skills.map((s) => (
                   <motion.li
                     key={s.name}
-                    className="flex items-center justify-between"
+                    className="flex items-center justify-between gap-2"
                     variants={staggerFadeUp}
                   >
-                    <span className="text-sm" style={{ color: "var(--fg)" }}>
+                    <span
+                      className="text-sm"
+                      style={{ color: "var(--fg)" }}
+                    >
                       {s.name}
                     </span>
-                    <span className="font-mono-label text-muted">{s.note}</span>
+                    <span className="font-mono-label text-muted shrink-0">
+                      {s.note}
+                    </span>
                   </motion.li>
                 ))}
               </motion.ul>
