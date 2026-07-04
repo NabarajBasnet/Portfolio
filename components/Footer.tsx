@@ -1,0 +1,153 @@
+"use client";
+
+import { Github, Linkedin, Instagram, Mail } from "lucide-react";
+
+const socials = [
+  {
+    label: "GitHub",
+    handle: "@NabarajBasnet",
+    href: "https://github.com/NabarajBasnet",
+    icon: <Github size={14} />,
+  },
+  {
+    label: "LinkedIn",
+    handle: "in/nabaraj-basnet",
+    href: "https://www.linkedin.com/in/nabaraj-basnet-1b9216248/",
+    icon: <Linkedin size={14} />,
+  },
+  {
+    label: "Instagram",
+    handle: "@nabaraj__basnet",
+    href: "https://www.instagram.com/nabaraj__basnet/",
+    icon: <Instagram size={14} />,
+  },
+  {
+    label: "Email",
+    handle: "nabarajbasnet2000@gmail.com",
+    href: "mailto:nabarajbasnet2000@gmail.com",
+    icon: <Mail size={14} />,
+  },
+];
+
+export default function Footer() {
+  return (
+    <footer
+      id="contact"
+      className="px-6 md:px-16 lg:px-24 py-20"
+      style={{ borderTop: "1px solid var(--border)" }}
+    >
+      <div className="max-w-6xl mx-auto w-full">
+        {/* Section label */}
+        <div className="flex items-start gap-6 mb-16">
+          <span className="font-mono-label text-muted pt-1 shrink-0">05 ——</span>
+          <div>
+            <h2
+              className="font-serif-heading text-[clamp(2rem,5vw,3.5rem)] leading-tight mb-3"
+              style={{ color: "var(--fg)" }}
+            >
+              Hire or collaborate
+            </h2>
+            <p
+              className="text-sm leading-relaxed max-w-xl"
+              style={{ color: "var(--fg-muted)" }}
+            >
+              I&apos;m open to full-stack developer roles, contract product
+              work, and focused builds where production quality matters. If
+              you&apos;re building something real, let&apos;s talk.
+            </p>
+          </div>
+        </div>
+
+        {/* Contact row */}
+        <div
+          className="grid md:grid-cols-2 gap-px mb-16"
+          style={{
+            border: "1px solid var(--border)",
+            background: "var(--border)",
+          }}
+        >
+          <div className="px-8 py-6" style={{ background: "var(--bg)" }}>
+            <p className="font-mono-label text-muted mb-2">Direct contact</p>
+            <a
+              href="mailto:nabarajbasnet2000@gmail.com"
+              className="font-serif-heading text-xl transition-colors duration-200"
+              style={{ color: "var(--fg)" }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLAnchorElement).style.color =
+                  "var(--accent)")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLAnchorElement).style.color =
+                  "var(--fg)")
+              }
+            >
+              nabarajbasnet2000@gmail.com
+            </a>
+          </div>
+          <div className="px-8 py-6" style={{ background: "var(--bg)" }}>
+            <p className="font-mono-label text-muted mb-2">Best fit</p>
+            <p className="text-sm" style={{ color: "var(--fg)" }}>
+              Full-stack roles, microservice builds, API design, production
+              hardening, real-time features.
+            </p>
+          </div>
+        </div>
+
+        {/* Social links */}
+        <div
+          className="grid grid-cols-2 md:grid-cols-4 gap-px mb-16"
+          style={{
+            border: "1px solid var(--border)",
+            background: "var(--border)",
+          }}
+        >
+          {socials.map((s) => (
+            <a
+              key={s.label}
+              href={s.href}
+              target={s.href.startsWith("mailto") ? undefined : "_blank"}
+              rel="noopener noreferrer"
+              className="px-6 py-5 flex flex-col gap-2 transition-colors duration-200 group"
+              style={{ background: "var(--bg)" }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLAnchorElement).style.background =
+                  "rgba(197,248,42,0.04)")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLAnchorElement).style.background =
+                  "var(--bg)")
+              }
+            >
+              <span
+                className="transition-colors duration-200"
+                style={{ color: "var(--fg-muted)" }}
+              >
+                {s.icon}
+              </span>
+              <span className="font-mono-label text-muted">{s.label}</span>
+              <span
+                className="text-xs transition-colors duration-200"
+                style={{ color: "var(--fg)" }}
+              >
+                {s.handle}
+              </span>
+            </a>
+          ))}
+        </div>
+
+        {/* Bottom bar */}
+        <div
+          className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pt-8"
+          style={{ borderTop: "1px solid var(--border)" }}
+        >
+          <span className="font-mono-label text-muted">
+            © {new Date().getFullYear()} Nabaraj Basnet
+          </span>
+          <span className="font-mono-label text-muted">
+            Next.js · TypeScript · Tailwind
+          </span>
+        </div>
+      </div>
+    </footer>
+  );
+}
