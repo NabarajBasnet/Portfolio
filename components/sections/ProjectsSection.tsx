@@ -1,5 +1,15 @@
 "use client";
 
+import { motion } from "framer-motion";
+import {
+  fadeUp,
+  slideInLeft,
+  slideInRight,
+  staggerContainer,
+  staggerFadeUp,
+  viewportOptions,
+} from "@/lib/animations";
+
 const projects = [
   {
     id: "fitstock",
@@ -51,7 +61,13 @@ export default function ProjectsSection() {
       style={{ borderColor: "var(--border)" }}
     >
       <div className="max-w-6xl mx-auto w-full">
-        <div className="flex items-start gap-6 mb-16">
+        <motion.div
+          className="flex items-start gap-6 mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOptions}
+          variants={fadeUp}
+        >
           <span className="font-mono-label text-muted pt-1 shrink-0">
             04 ——
           </span>
@@ -66,21 +82,26 @@ export default function ProjectsSection() {
               Shipped to production, not toy examples
             </p>
           </div>
-        </div>
+        </motion.div>
 
         <div
           className="space-y-px"
           style={{ borderTop: "1px solid var(--border)" }}
         >
-          {projects.map((project) => (
+          {projects.map((project, pi) => (
             <div
               key={project.id}
-              className="grid lg:grid-cols-[1fr_1.2fr] gap-0 group"
+              className="grid lg:grid-cols-[1fr_1.2fr] gap-0"
               style={{ borderBottom: "1px solid var(--border)" }}
             >
-              <div
+              <motion.div
                 className="p-8 lg:p-10 flex flex-col justify-between"
                 style={{ borderRight: "1px solid var(--border)" }}
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewportOptions}
+                variants={slideInLeft}
+                transition={{ delay: pi * 0.1 }}
               >
                 <div>
                   <div className="flex items-center gap-3 mb-3">
@@ -108,12 +129,20 @@ export default function ProjectsSection() {
                     )}
                   </div>
 
-                  <h3
+                  <motion.h3
                     className="font-serif-heading text-3xl md:text-4xl mb-1"
                     style={{ color: "var(--fg)" }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={viewportOptions}
+                    transition={{
+                      delay: pi * 0.1 + 0.15,
+                      duration: 0.6,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
                   >
                     {project.name}
-                  </h3>
+                  </motion.h3>
                   <p
                     className="font-serif-heading italic text-lg mb-6"
                     style={{ color: "var(--fg-muted)" }}
@@ -122,19 +151,46 @@ export default function ProjectsSection() {
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
+                <motion.div
+                  className="flex flex-wrap gap-2"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={viewportOptions}
+                  variants={staggerContainer}
+                  transition={{ delayChildren: pi * 0.1 + 0.25 }}
+                >
                   {project.tags.map((t) => (
-                    <span key={t} className="tag">
+                    <motion.span
+                      key={t}
+                      className="tag"
+                      variants={staggerFadeUp}
+                      whileHover={{ scale: 1.05 }}
+                    >
                       {t}
-                    </span>
+                    </motion.span>
                   ))}
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
 
-              <div className="p-8 lg:p-10">
-                <div
+              <motion.div
+                className="p-8 lg:p-10"
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewportOptions}
+                variants={slideInRight}
+                transition={{ delay: pi * 0.1 + 0.05 }}
+              >
+                <motion.div
                   className="mb-6 pl-4"
                   style={{ borderLeft: "2px solid var(--accent)" }}
+                  initial={{ opacity: 0, scaleY: 0, originY: 0 }}
+                  whileInView={{ opacity: 1, scaleY: 1 }}
+                  viewport={viewportOptions}
+                  transition={{
+                    delay: pi * 0.1 + 0.2,
+                    duration: 0.5,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
                 >
                   <p className="font-mono-label text-muted mb-1">
                     {project.highlight.label}
@@ -148,21 +204,33 @@ export default function ProjectsSection() {
                   >
                     {project.highlight.text}
                   </p>
-                </div>
+                </motion.div>
 
-                <p
+                <motion.p
                   className="text-sm leading-relaxed mb-6"
                   style={{ color: "var(--fg-muted)" }}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={viewportOptions}
+                  transition={{ delay: pi * 0.1 + 0.3, duration: 0.6 }}
                 >
                   {project.description}
-                </p>
+                </motion.p>
 
-                <ul className="space-y-2">
+                <motion.ul
+                  className="space-y-2"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={viewportOptions}
+                  variants={staggerContainer}
+                  transition={{ delayChildren: pi * 0.1 + 0.35 }}
+                >
                   {project.points.map((point) => (
-                    <li
+                    <motion.li
                       key={point}
                       className="flex items-start gap-2 text-sm"
                       style={{ color: "var(--fg-muted)" }}
+                      variants={staggerFadeUp}
                     >
                       <span
                         style={{
@@ -173,10 +241,10 @@ export default function ProjectsSection() {
                         —
                       </span>
                       {point}
-                    </li>
+                    </motion.li>
                   ))}
-                </ul>
-              </div>
+                </motion.ul>
+              </motion.div>
             </div>
           ))}
         </div>

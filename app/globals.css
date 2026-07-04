@@ -27,7 +27,7 @@
   body {
     background-color: var(--bg);
     color: var(--fg);
-    font-family: var(--font-geist-sans, 'Geist', system-ui, sans-serif);
+    font-family: var(--font-geist-sans, "Geist", system-ui, sans-serif);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
@@ -35,7 +35,7 @@
 
   /* Subtle vertical-line grid overlay */
   body::before {
-    content: '';
+    content: "";
     position: fixed;
     inset: 0;
     background-image: repeating-linear-gradient(
@@ -69,7 +69,12 @@
 
 @layer utilities {
   .font-mono-label {
-    font-family: var(--font-geist-mono, 'Geist Mono', 'JetBrains Mono', monospace);
+    font-family: var(
+      --font-geist-mono,
+      "Geist Mono",
+      "JetBrains Mono",
+      monospace
+    );
     font-size: 0.6875rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -77,7 +82,12 @@
   }
 
   .font-serif-heading {
-    font-family: var(--font-instrument-serif, 'Instrument Serif', Georgia, serif);
+    font-family: var(
+      --font-instrument-serif,
+      "Instrument Serif",
+      Georgia,
+      serif
+    );
     font-weight: 400;
   }
 
@@ -102,7 +112,9 @@
     border: 1px solid var(--border);
     color: var(--fg-muted);
     border-radius: 2px;
-    transition: color 0.2s, border-color 0.2s;
+    transition:
+      color 0.2s,
+      border-color 0.2s;
   }
 
   .tag:hover {
@@ -120,7 +132,10 @@
     color: var(--fg);
     background: transparent;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    transition:
+      background 0.2s,
+      color 0.2s,
+      border-color 0.2s;
     border-radius: 2px;
     display: inline-flex;
     align-items: center;
@@ -143,7 +158,9 @@
     color: var(--bg);
     background: var(--accent);
     cursor: pointer;
-    transition: background 0.2s, color 0.2s;
+    transition:
+      background 0.2s,
+      color 0.2s;
     border-radius: 2px;
     display: inline-flex;
     align-items: center;

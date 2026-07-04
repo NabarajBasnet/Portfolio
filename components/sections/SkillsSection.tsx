@@ -1,6 +1,14 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
+import {
+  fadeUp,
+  staggerContainer,
+  staggerFadeUp,
+  scaleIn,
+  viewportOptions,
+} from "@/lib/animations";
 
 const skillGroups = [
   {
@@ -72,7 +80,13 @@ export default function SkillsSection() {
       style={{ borderColor: "var(--border)" }}
     >
       <div className="max-w-6xl mx-auto w-full">
-        <div className="flex items-start gap-6 mb-16">
+        <motion.div
+          className="flex items-start gap-6 mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOptions}
+          variants={fadeUp}
+        >
           <span className="font-mono-label text-muted pt-1 shrink-0">
             03 ——
           </span>
@@ -87,9 +101,9 @@ export default function SkillsSection() {
               Tools selected for shipping reliable, scalable systems
             </p>
           </div>
-        </div>
+        </motion.div>
 
-        <div
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-x divide-y"
           style={
             {
@@ -98,33 +112,37 @@ export default function SkillsSection() {
               "--tw-divide-opacity": 1,
             } as React.CSSProperties
           }
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOptions}
+          variants={staggerContainer}
         >
           {skillGroups.map((group) => (
-            <div
+            <motion.div
               key={group.index}
-              className="p-6 lg:p-8 group"
+              className="p-6 lg:p-8"
               style={{
                 borderRight: "1px solid var(--border)",
                 borderBottom: "1px solid var(--border)",
                 background: "var(--card-bg)",
-                transition: "background 0.2s",
               }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLDivElement).style.background =
-                  "rgba(197,248,42,0.03)")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLDivElement).style.background =
-                  "var(--card-bg)")
-              }
+              variants={scaleIn}
+              whileHover={{
+                background: "rgba(197,248,42,0.04)",
+                transition: { duration: 0.2 },
+              }}
             >
               <div className="flex items-center gap-3 mb-5">
-                <span
+                <motion.span
                   className="font-mono-label"
                   style={{ color: "var(--accent)" }}
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={viewportOptions}
+                  transition={{ duration: 0.4 }}
                 >
                   {group.index}
-                </span>
+                </motion.span>
                 <h3
                   className="font-serif-heading text-lg"
                   style={{ color: "var(--fg)" }}
@@ -132,22 +150,30 @@ export default function SkillsSection() {
                   {group.category}
                 </h3>
               </div>
-              <ul className="space-y-3">
+
+              <motion.ul
+                className="space-y-3"
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewportOptions}
+                variants={staggerContainer}
+              >
                 {group.skills.map((s) => (
-                  <li
+                  <motion.li
                     key={s.name}
                     className="flex items-center justify-between"
+                    variants={staggerFadeUp}
                   >
                     <span className="text-sm" style={{ color: "var(--fg)" }}>
                       {s.name}
                     </span>
                     <span className="font-mono-label text-muted">{s.note}</span>
-                  </li>
+                  </motion.li>
                 ))}
-              </ul>
-            </div>
+              </motion.ul>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

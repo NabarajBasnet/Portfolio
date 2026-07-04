@@ -1,6 +1,14 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Github, Linkedin, Instagram, Mail } from "lucide-react";
+import {
+  fadeUp,
+  slideInLeft,
+  staggerContainer,
+  staggerFadeUp,
+  viewportOptions,
+} from "@/lib/animations";
 
 const socials = [
   {
@@ -37,9 +45,16 @@ export default function Footer() {
       style={{ borderTop: "1px solid var(--border)" }}
     >
       <div className="max-w-6xl mx-auto w-full">
-        {/* Section label */}
-        <div className="flex items-start gap-6 mb-16">
-          <span className="font-mono-label text-muted pt-1 shrink-0">05 ——</span>
+        <motion.div
+          className="flex items-start gap-6 mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOptions}
+          variants={slideInLeft}
+        >
+          <span className="font-mono-label text-muted pt-1 shrink-0">
+            05 ——
+          </span>
           <div>
             <h2
               className="font-serif-heading text-[clamp(2rem,5vw,3.5rem)] leading-tight mb-3"
@@ -56,97 +71,98 @@ export default function Footer() {
               you&apos;re building something real, let&apos;s talk.
             </p>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Contact row */}
-        <div
+        <motion.div
           className="grid md:grid-cols-2 gap-px mb-16"
           style={{
             border: "1px solid var(--border)",
             background: "var(--border)",
           }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOptions}
+          variants={staggerContainer}
         >
-          <div className="px-8 py-6" style={{ background: "var(--bg)" }}>
+          <motion.div
+            className="px-8 py-6"
+            style={{ background: "var(--bg)" }}
+            variants={staggerFadeUp}
+          >
             <p className="font-mono-label text-muted mb-2">Direct contact</p>
-            <a
+            <motion.a
               href="mailto:nabarajbasnet2000@gmail.com"
-              className="font-serif-heading text-xl transition-colors duration-200"
+              className="font-serif-heading text-xl"
               style={{ color: "var(--fg)" }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLAnchorElement).style.color =
-                  "var(--accent)")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLAnchorElement).style.color =
-                  "var(--fg)")
-              }
+              whileHover={{ color: "var(--accent)" }}
+              transition={{ duration: 0.2 }}
             >
               nabarajbasnet2000@gmail.com
-            </a>
-          </div>
-          <div className="px-8 py-6" style={{ background: "var(--bg)" }}>
+            </motion.a>
+          </motion.div>
+          <motion.div
+            className="px-8 py-6"
+            style={{ background: "var(--bg)" }}
+            variants={staggerFadeUp}
+          >
             <p className="font-mono-label text-muted mb-2">Best fit</p>
             <p className="text-sm" style={{ color: "var(--fg)" }}>
               Full-stack roles, microservice builds, API design, production
               hardening, real-time features.
             </p>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        {/* Social links */}
-        <div
+        <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-px mb-16"
           style={{
             border: "1px solid var(--border)",
             background: "var(--border)",
           }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOptions}
+          variants={staggerContainer}
         >
           {socials.map((s) => (
-            <a
+            <motion.a
               key={s.label}
               href={s.href}
               target={s.href.startsWith("mailto") ? undefined : "_blank"}
               rel="noopener noreferrer"
-              className="px-6 py-5 flex flex-col gap-2 transition-colors duration-200 group"
+              className="px-6 py-5 flex flex-col gap-2"
               style={{ background: "var(--bg)" }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLAnchorElement).style.background =
-                  "rgba(197,248,42,0.04)")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLAnchorElement).style.background =
-                  "var(--bg)")
-              }
+              variants={staggerFadeUp}
+              whileHover={{
+                background: "rgba(197,248,42,0.05)",
+                y: -2,
+                transition: { duration: 0.2 },
+              }}
             >
-              <span
-                className="transition-colors duration-200"
-                style={{ color: "var(--fg-muted)" }}
-              >
-                {s.icon}
-              </span>
+              <span style={{ color: "var(--fg-muted)" }}>{s.icon}</span>
               <span className="font-mono-label text-muted">{s.label}</span>
-              <span
-                className="text-xs transition-colors duration-200"
-                style={{ color: "var(--fg)" }}
-              >
+              <span className="text-xs" style={{ color: "var(--fg)" }}>
                 {s.handle}
               </span>
-            </a>
+            </motion.a>
           ))}
-        </div>
+        </motion.div>
 
-        {/* Bottom bar */}
-        <div
+        <motion.div
           className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pt-8"
           style={{ borderTop: "1px solid var(--border)" }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOptions}
+          variants={fadeUp}
         >
           <span className="font-mono-label text-muted">
             © {new Date().getFullYear()} Nabaraj Basnet
           </span>
           <span className="font-mono-label text-muted">
-            Next.js · TypeScript · Tailwind
+            Next.js · Nest.js · TypeScript · Tailwind
           </span>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

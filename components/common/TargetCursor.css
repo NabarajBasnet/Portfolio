@@ -1,72 +1,80 @@
 @keyframes orbit {
-    0% {
-        transform: rotate(0deg) translateX(24px) rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg) translateX(24px) rotate(-360deg);
-    }
+  0% {
+    transform: rotate(0deg) translateX(24px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(24px) rotate(-360deg);
+  }
 }
 
 @keyframes pulse {
-    0%, 100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(1.2);
-        opacity: 0.8;
-    }
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.8;
+  }
 }
 
 @keyframes glow {
-    0%, 100% {
-        box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
-    }
-    50% {
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(147, 51, 234, 0.6);
-    }
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(59, 130, 246, 0.8),
+      0 0 30px rgba(147, 51, 234, 0.6);
+  }
 }
 
 .target-cursor-orbit {
-    animation: orbit 4s linear infinite;
+  animation: orbit 4s linear infinite;
 }
 
 .target-cursor-pulse {
-    animation: pulse 2s ease-in-out infinite;
+  animation: pulse 2s ease-in-out infinite;
 }
 
 .target-cursor-glow {
-    animation: glow 3s ease-in-out infinite;
+  animation: glow 3s ease-in-out infinite;
 }
 
 /* Custom animations for each orbiting dot */
 .target-cursor-corner:nth-child(1) {
-    animation: orbit 3s linear infinite;
+  animation: orbit 3s linear infinite;
 }
 
 .target-cursor-corner:nth-child(2) {
-    animation: orbit 3s linear infinite;
-    animation-delay: -0.75s;
+  animation: orbit 3s linear infinite;
+  animation-delay: -0.75s;
 }
 
 .target-cursor-corner:nth-child(3) {
-    animation: orbit 3s linear infinite;
-    animation-delay: -1.5s;
+  animation: orbit 3s linear infinite;
+  animation-delay: -1.5s;
 }
 
 .target-cursor-corner:nth-child(4) {
-    animation: orbit 3s linear infinite;
-    animation-delay: -2.25s;
+  animation: orbit 3s linear infinite;
+  animation-delay: -2.25s;
 }
 
 /* Trail effect */
 .cursor-trail {
-    position: fixed;
-    pointer-events: none;
-    z-index: 9998;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.6) 0%, transparent 70%);
-    transform: translate(-50%, -50%);
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(59, 130, 246, 0.6) 0%,
+    transparent 70%
+  );
+  transform: translate(-50%, -50%);
 }
