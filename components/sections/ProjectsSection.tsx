@@ -3,8 +3,6 @@
 import { motion } from "framer-motion";
 import {
   fadeUp,
-  slideInLeft,
-  slideInRight,
   staggerContainer,
   staggerFadeUp,
   viewportOptions,
@@ -12,6 +10,7 @@ import {
 
 interface Project {
   id: string;
+  index: string;
   year: string;
   status: { label: string; live: boolean };
   name: string;
@@ -26,7 +25,8 @@ interface Project {
 const projects: Project[] = [
   {
     id: "fitbinary",
-    year: "2024 / ongoing",
+    index: "01",
+    year: "2024 — ongoing",
     status: { label: "Live · Multi-product", live: true },
     name: "Fitbinary",
     subtitle: "Fitness Business Platform",
@@ -37,7 +37,8 @@ const projects: Project[] = [
   },
   {
     id: "fitstock",
-    year: "2024 / shipped",
+    index: "02",
+    year: "2024 — shipped",
     status: { label: "Live · Paying client", live: true },
     name: "FitStock",
     subtitle: "Inventory Management Platform",
@@ -58,7 +59,8 @@ const projects: Project[] = [
   },
   {
     id: "fitcloud",
-    year: "2024 / live",
+    index: "03",
+    year: "2024 — live",
     status: { label: "Live · Paying client", live: true },
     name: "FitCloud",
     subtitle: "Gym Management Platform",
@@ -69,8 +71,9 @@ const projects: Project[] = [
   },
   {
     id: "onepasal",
-    year: "Aug 2025 / ongoing",
-    status: { label: "Professional work · Since Aug 2025", live: false },
+    index: "04",
+    year: "Aug 2025 — ongoing",
+    status: { label: "Professional · Since Aug 2025", live: false },
     name: "OnePasal",
     subtitle: "Admin, Vendor & Customer Portals",
     tags: ["React", "Next.js", "TypeScript"],
@@ -78,8 +81,8 @@ const projects: Project[] = [
     description:
       "Worked across all three portals — admin, vendor, and customer — as part of the engineering team. Focused on building scalable, reusable component architecture and clean API integration patterns across the platform.",
     points: [
-      "Built and maintained features across admin, vendor, and customer portals",
-      "Reusable component architecture shared across multiple portals",
+      "Built and maintained features across all three portals",
+      "Reusable component architecture shared across portals",
       "Scalable API integration patterns",
       "Collaborated within an existing production codebase",
     ],
@@ -94,15 +97,16 @@ export default function ProjectsSection() {
       style={{ borderColor: "var(--border)" }}
     >
       <div className="max-w-6xl mx-auto w-full">
+        {/* Section header */}
         <motion.div
-          className="flex items-start gap-4 sm:gap-6 mb-10 sm:mb-16"
+          className="flex items-start gap-4 sm:gap-6 mb-12 sm:mb-20"
           initial="hidden"
           whileInView="visible"
           viewport={viewportOptions}
           variants={fadeUp}
         >
           <span className="font-mono-label text-muted pt-1 shrink-0">
-            04 ——
+            02 ——
           </span>
           <div>
             <h2
@@ -117,192 +121,200 @@ export default function ProjectsSection() {
           </div>
         </motion.div>
 
-        <div
-          className="space-y-px"
-          style={{ borderTop: "1px solid var(--border)" }}
-        >
+        {/* Project cards */}
+        <div className="space-y-6 sm:space-y-8">
           {projects.map((project, pi) => (
-            <div
+            <motion.article
               key={project.id}
-              className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr]"
-              style={{ borderBottom: "1px solid var(--border)" }}
+              className="relative"
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={viewportOptions}
+              transition={{
+                delay: pi * 0.07,
+                duration: 0.65,
+                ease: [0.16, 1, 0.3, 1],
+              }}
             >
-              {/* Left panel */}
-              <motion.div
-                className="p-6 sm:p-8 lg:p-10 flex flex-col justify-between gap-6"
-                style={{ borderBottom: "1px solid var(--border)" }}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportOptions}
-                variants={slideInLeft}
-                transition={{ delay: pi * 0.08 }}
+              <div
+                className="relative overflow-hidden"
+                style={{
+                  border: "1px solid var(--border)",
+                  background: "var(--card-bg)",
+                }}
               >
-                <div>
-                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
-                    <span className="font-mono-label text-muted">
+                {/* Ghost number watermark */}
+                <div
+                  className="absolute top-0 right-0 font-serif-heading leading-none select-none pointer-events-none hidden sm:block"
+                  style={{
+                    fontSize: "clamp(5rem, 12vw, 9rem)",
+                    color: "rgba(243,242,236,0.03)",
+                    lineHeight: 1,
+                    transform: "translate(8%, -15%)",
+                  }}
+                >
+                  {project.index}
+                </div>
+
+                {/* Top bar — index + year + status */}
+                <div
+                  className="flex flex-wrap items-center justify-between gap-3 px-5 sm:px-8 py-3 sm:py-4"
+                  style={{ borderBottom: "1px solid var(--border)" }}
+                >
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <span
+                      className="font-mono-label font-bold"
+                      style={{ color: "var(--accent)" }}
+                    >
+                      {project.index}
+                    </span>
+                    <span
+                      className="font-mono-label"
+                      style={{ color: "var(--fg-muted)" }}
+                    >
                       {project.year}
                     </span>
-                    {project.status.live ? (
-                      <span
-                        className="inline-flex items-center gap-1.5 font-mono-label"
-                        style={{ color: "var(--accent)" }}
-                      >
-                        <span
-                          className="w-1.5 h-1.5 rounded-full animate-pulse"
-                          style={{ background: "var(--accent)" }}
-                        />
-                        {project.status.label}
-                      </span>
-                    ) : (
-                      <span
-                        className="font-mono-label"
-                        style={{ color: "var(--fg-muted)" }}
-                      >
-                        {project.status.label}
-                      </span>
-                    )}
                   </div>
 
-                  <motion.h3
-                    className="font-serif-heading text-2xl sm:text-3xl md:text-4xl mb-1"
-                    style={{ color: "var(--fg)" }}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={viewportOptions}
-                    transition={{
-                      delay: pi * 0.08 + 0.15,
-                      duration: 0.6,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                  >
-                    {project.name}
-                  </motion.h3>
-                  <p
-                    className="font-serif-heading italic text-base sm:text-lg mb-4 sm:mb-6"
-                    style={{ color: "var(--fg-muted)" }}
-                  >
-                    {project.subtitle}
-                  </p>
-                </div>
-
-                <div className="flex flex-col gap-4">
-                  <motion.div
-                    className="flex flex-wrap gap-2"
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={viewportOptions}
-                    variants={staggerContainer}
-                    transition={{ delayChildren: pi * 0.08 + 0.25 }}
-                  >
-                    {project.tags.map((t) => (
-                      <motion.span
-                        key={t}
-                        className="tag"
-                        variants={staggerFadeUp}
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        {t}
-                      </motion.span>
-                    ))}
-                  </motion.div>
-
-                  <motion.a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-outline self-start"
-                    initial={{ opacity: 0, y: 8 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={viewportOptions}
-                    transition={{ delay: pi * 0.08 + 0.35, duration: 0.5 }}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    Visit site ↗
-                  </motion.a>
-                </div>
-              </motion.div>
-
-              {/* Right panel */}
-              <motion.div
-                className="p-6 sm:p-8 lg:p-10"
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportOptions}
-                variants={slideInRight}
-                transition={{ delay: pi * 0.08 + 0.05 }}
-              >
-                {project.highlight && (
-                  <motion.div
-                    className="mb-5 sm:mb-6 pl-4"
-                    style={{ borderLeft: "2px solid var(--accent)" }}
-                    initial={{ opacity: 0, scaleY: 0, originY: 0 }}
-                    whileInView={{ opacity: 1, scaleY: 1 }}
-                    viewport={viewportOptions}
-                    transition={{
-                      delay: pi * 0.08 + 0.2,
-                      duration: 0.5,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                  >
-                    <p className="font-mono-label text-muted mb-1">
-                      {project.highlight.label}
-                    </p>
-                    <p
-                      style={{
-                        color: "var(--fg)",
-                        fontSize: "0.875rem",
-                        lineHeight: "1.6",
-                      }}
+                  {project.status.live ? (
+                    <span
+                      className="inline-flex items-center gap-1.5 font-mono-label"
+                      style={{ color: "var(--accent)" }}
                     >
-                      {project.highlight.text}
-                    </p>
-                  </motion.div>
-                )}
+                      <span
+                        className="w-1.5 h-1.5 rounded-full animate-pulse"
+                        style={{ background: "var(--accent)" }}
+                      />
+                      {project.status.label}
+                    </span>
+                  ) : (
+                    <span
+                      className="font-mono-label"
+                      style={{ color: "var(--fg-muted)" }}
+                    >
+                      {project.status.label}
+                    </span>
+                  )}
+                </div>
 
-                <motion.p
-                  className="text-sm leading-relaxed mb-5 sm:mb-6"
-                  style={{ color: "var(--fg-muted)" }}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={viewportOptions}
-                  transition={{ delay: pi * 0.08 + 0.3, duration: 0.6 }}
-                >
-                  {project.description}
-                </motion.p>
-
-                {project.points && project.points.length > 0 && (
-                  <motion.ul
-                    className="space-y-2"
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={viewportOptions}
-                    variants={staggerContainer}
-                    transition={{ delayChildren: pi * 0.08 + 0.35 }}
+                {/* Card body */}
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr]">
+                  {/* Left — name, subtitle, tags, link */}
+                  <div
+                    className="p-5 sm:p-8 flex flex-col gap-5 sm:gap-6"
+                    style={{ borderRight: "1px solid var(--border)" }}
                   >
-                    {project.points.map((point) => (
-                      <motion.li
-                        key={point}
-                        className="flex items-start gap-2 text-sm"
-                        style={{ color: "var(--fg-muted)" }}
-                        variants={staggerFadeUp}
+                    <div>
+                      <h3
+                        className="font-serif-heading text-3xl sm:text-4xl leading-tight mb-1"
+                        style={{ color: "var(--fg)" }}
                       >
-                        <span
-                          style={{
-                            color: "var(--accent)",
-                            marginTop: "0.15em",
-                            flexShrink: 0,
-                          }}
+                        {project.name}
+                      </h3>
+                      <p
+                        className="font-serif-heading italic text-base sm:text-lg"
+                        style={{ color: "var(--fg-muted)" }}
+                      >
+                        {project.subtitle}
+                      </p>
+                    </div>
+
+                    <motion.div
+                      className="flex flex-wrap gap-2"
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={viewportOptions}
+                      variants={staggerContainer}
+                      transition={{ delayChildren: pi * 0.07 + 0.2 }}
+                    >
+                      {project.tags.map((t) => (
+                        <motion.span
+                          key={t}
+                          className="tag"
+                          variants={staggerFadeUp}
+                          whileHover={{ scale: 1.05 }}
                         >
-                          —
-                        </span>
-                        {point}
-                      </motion.li>
-                    ))}
-                  </motion.ul>
-                )}
-              </motion.div>
-            </div>
+                          {t}
+                        </motion.span>
+                      ))}
+                    </motion.div>
+
+                    <motion.a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-outline self-start mt-auto"
+                      initial={{ opacity: 0, y: 8 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={viewportOptions}
+                      transition={{ delay: pi * 0.07 + 0.3, duration: 0.5 }}
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                    >
+                      Visit site ↗
+                    </motion.a>
+                  </div>
+
+                  {/* Right — highlight, description, bullets */}
+                  <div className="p-5 sm:p-8 flex flex-col gap-5">
+                    {project.highlight && (
+                      <div
+                        className="pl-4 py-1"
+                        style={{ borderLeft: "2px solid var(--accent)" }}
+                      >
+                        <p className="font-mono-label text-muted mb-1">
+                          {project.highlight.label}
+                        </p>
+                        <p
+                          className="text-sm leading-relaxed"
+                          style={{ color: "var(--fg)" }}
+                        >
+                          {project.highlight.text}
+                        </p>
+                      </div>
+                    )}
+
+                    <p
+                      className="text-sm leading-relaxed"
+                      style={{ color: "var(--fg-muted)" }}
+                    >
+                      {project.description}
+                    </p>
+
+                    {project.points && project.points.length > 0 && (
+                      <motion.ul
+                        className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2"
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={viewportOptions}
+                        variants={staggerContainer}
+                        transition={{ delayChildren: pi * 0.07 + 0.3 }}
+                      >
+                        {project.points.map((point) => (
+                          <motion.li
+                            key={point}
+                            className="flex items-start gap-2 text-sm"
+                            style={{ color: "var(--fg-muted)" }}
+                            variants={staggerFadeUp}
+                          >
+                            <span
+                              style={{
+                                color: "var(--accent)",
+                                marginTop: "0.2em",
+                                flexShrink: 0,
+                              }}
+                            >
+                              ↳
+                            </span>
+                            {point}
+                          </motion.li>
+                        ))}
+                      </motion.ul>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </motion.article>
           ))}
         </div>
       </div>
