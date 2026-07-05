@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-  { label: "Skills", index: "03", href: "#skills" },
-  { label: "Work", index: "04", href: "#projects" },
-  { label: "Contact", index: "05", href: "#contact" },
+  { label: "Skills", index: "01", href: "#skills" },
+  { label: "Work", index: "02", href: "#projects" },
+  { label: "Contact", index: "03", href: "#contact" },
 ];
 
 export default function Navbar() {
@@ -27,7 +27,7 @@ export default function Navbar() {
 
   return (
     <motion.header
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 overflow-hidden"
       style={{
         borderBottom: "1px solid var(--border)",
         background: scrolled ? "rgba(8,8,8,0.92)" : "transparent",
@@ -37,7 +37,7 @@ export default function Navbar() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div className="max-w-6xl mx-auto px-6 md:px-16 lg:px-24 h-16 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 md:px-16 lg:px-24 h-16 flex items-center justify-between">
         <motion.button
           onClick={() => scrollTo("#top")}
           className="font-mono-label flex items-center gap-1"
@@ -127,8 +127,8 @@ export default function Navbar() {
                   borderBottom: "1px solid var(--border)",
                   color: "var(--fg-muted)",
                 }}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06, duration: 0.35 }}
               >
                 <span style={{ color: "var(--accent)" }}>{link.index}</span>

@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 import {
   fadeUp,
@@ -38,7 +37,7 @@ const skillGroups = [
     skills: [
       { name: "PostgreSQL", note: "Per-service" },
       { name: "MongoDB", note: "Document model" },
-      { name: "Redis", note: "Cache + streams" },
+      { name: "Redis", note: "Cache + streams and more" },
     ],
   },
   {
@@ -76,7 +75,7 @@ export default function SkillsSection() {
   return (
     <section
       id="skills"
-      className="px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-24 border-b"
+      className="px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-24 border-b overflow-x-hidden"
       style={{ borderColor: "var(--border)" }}
     >
       <div className="max-w-6xl mx-auto w-full">
@@ -161,10 +160,7 @@ export default function SkillsSection() {
                     className="flex items-center justify-between gap-2"
                     variants={staggerFadeUp}
                   >
-                    <span
-                      className="text-sm"
-                      style={{ color: "var(--fg)" }}
-                    >
+                    <span className="text-sm" style={{ color: "var(--fg)" }}>
                       {s.name}
                     </span>
                     <span className="font-mono-label text-muted shrink-0">

@@ -8,13 +8,11 @@ import {
   slideInRight,
   staggerContainer,
   staggerFadeUp,
-  viewportOptions,
 } from "@/lib/animations";
 
 const stats = [
   { value: "2+", label: "Years shipping" },
   { value: "2", label: "Apps in production" },
-  { value: "6+", label: "Services in TrainLink" },
   { value: "3", label: "DBs mastered" },
 ];
 
@@ -52,16 +50,6 @@ export default function HeroSection({ onViewProjects }: HeroSectionProps) {
         >
           <span className="font-mono-label text-muted">
             Based in Kathmandu, Nepal
-          </span>
-          <span
-            className="inline-flex items-center gap-1.5 font-mono-label"
-            style={{ color: "var(--accent)" }}
-          >
-            <span
-              className="w-1.5 h-1.5 rounded-full animate-pulse"
-              style={{ background: "var(--accent)" }}
-            />
-            Open to work
           </span>
         </motion.div>
 
@@ -127,8 +115,8 @@ export default function HeroSection({ onViewProjects }: HeroSectionProps) {
               transition={{ delay: 0.55 }}
             >
               Full-stack software developer building scalable microservices and
-              production-grade web applications. I care about clean architecture,
-              reliable systems, and shipping software that works.
+              production-grade web applications. I care about clean
+              architecture, reliable systems, and shipping software that works.
             </motion.p>
 
             <motion.div

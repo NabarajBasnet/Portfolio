@@ -10,20 +10,45 @@ import {
   viewportOptions,
 } from "@/lib/animations";
 
-const projects = [
+interface Project {
+  id: string;
+  year: string;
+  status: { label: string; live: boolean };
+  name: string;
+  subtitle: string;
+  tags: string[];
+  link: string;
+  highlight?: { label: string; text: string };
+  description: string;
+  points?: string[];
+}
+
+const projects: Project[] = [
+  {
+    id: "fitbinary",
+    year: "2024 / ongoing",
+    status: { label: "Live · Multi-product", live: true },
+    name: "Fitbinary",
+    subtitle: "Fitness Business Platform",
+    tags: ["NestJS", "MongoDB", "TypeScript", "React", "Microservices"],
+    link: "https://www.fitbinary.com/",
+    description:
+      "Fitbinary is a suite of products for gyms and fitness businesses, currently serving a paying client in production. FitStock and FitCloud are both products under the Fitbinary brand.",
+  },
   {
     id: "fitstock",
     year: "2024 / shipped",
     status: { label: "Live · Paying client", live: true },
     name: "FitStock",
-    subtitle: "Inventory Management SaaS",
+    subtitle: "Inventory Management Platform",
     tags: ["NestJS", "MongoDB", "TypeScript", "React"],
+    link: "https://fitstock.fitbinary.com/",
     highlight: {
       label: "Impact",
       text: "Multi-branch inventory system currently live with a paying gym client.",
     },
     description:
-      "Multi-branch inventory management system built for gyms and fitness businesses. Covers stock transfers between branches, barcode-based product tracking, low-stock alerts, sales reporting, and a complete audit trail so every change is logged and traceable.",
+      "Multi-branch inventory management system built for gyms and fitness businesses, under Fitbinary. Covers stock transfers between branches, barcode-based product tracking, low-stock alerts, sales reporting, and a complete audit trail so every change is logged and traceable.",
     points: [
       "Multi-branch stock transfer flows",
       "Barcode scanning for product lookup",
@@ -32,23 +57,31 @@ const projects = [
     ],
   },
   {
-    id: "trainlink",
-    year: "2025 / in progress",
-    status: { label: "Private beta", live: false },
-    name: "TrainLink",
-    subtitle: "Fitness Marketplace Platform",
-    tags: ["NestJS", "PostgreSQL", "gRPC", "Docker", "Turborepo", "Redis"],
-    highlight: {
-      label: "Architecture",
-      text: "8 independent microservices behind a single API Gateway, communicating via gRPC.",
-    },
+    id: "fitcloud",
+    year: "2024 / live",
+    status: { label: "Live · Paying client", live: true },
+    name: "FitCloud",
+    subtitle: "Gym Management Platform",
+    tags: ["NestJS", "MongoDB", "TypeScript", "React"],
+    link: "https://fitcloud.fitbinary.com/",
     description:
-      "Two-sided marketplace connecting personal trainers with clients. Microservices architecture with 8 independent services — auth, billing, core, media, notifications — each with their own PostgreSQL database, communicating via gRPC behind a single API Gateway.",
+      "Gym management platform under Fitbinary, handling day-to-day gym operations. Originally built in Express, migrated to NestJS as part of a broader move toward a consistent microservices architecture across the Fitbinary product line.",
+  },
+  {
+    id: "onepasal",
+    year: "Aug 2025 / ongoing",
+    status: { label: "Professional work · Since Aug 2025", live: false },
+    name: "OnePasal",
+    subtitle: "Admin, Vendor & Customer Portals",
+    tags: ["React", "Next.js", "TypeScript"],
+    link: "https://onepasal.com/",
+    description:
+      "Worked across all three portals — admin, vendor, and customer — as part of the engineering team. Focused on building scalable, reusable component architecture and clean API integration patterns across the platform.",
     points: [
-      "8 services behind a single API Gateway",
-      "Redis-backed refresh token rotation",
-      "Per-service PostgreSQL databases",
-      "Dockerized deployment with Turborepo",
+      "Built and maintained features across admin, vendor, and customer portals",
+      "Reusable component architecture shared across multiple portals",
+      "Scalable API integration patterns",
+      "Collaborated within an existing production codebase",
     ],
   },
 ];
@@ -57,7 +90,7 @@ export default function ProjectsSection() {
   return (
     <section
       id="projects"
-      className="px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-24 border-b"
+      className="px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-24 border-b overflow-x-hidden"
       style={{ borderColor: "var(--border)" }}
     >
       <div className="max-w-6xl mx-auto w-full">
@@ -79,7 +112,7 @@ export default function ProjectsSection() {
               Selected Work
             </h2>
             <p className="font-mono-label text-muted mt-2">
-              Shipped to production, not toy examples
+              Shipped to production
             </p>
           </div>
         </motion.div>
@@ -97,15 +130,12 @@ export default function ProjectsSection() {
               {/* Left panel */}
               <motion.div
                 className="p-6 sm:p-8 lg:p-10 flex flex-col justify-between gap-6"
-                style={{
-                  borderBottom: "1px solid var(--border)",
-                }}
-                // On desktop, right border separates the two columns
+                style={{ borderBottom: "1px solid var(--border)" }}
                 initial="hidden"
                 whileInView="visible"
                 viewport={viewportOptions}
                 variants={slideInLeft}
-                transition={{ delay: pi * 0.1 }}
+                transition={{ delay: pi * 0.08 }}
               >
                 <div>
                   <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
@@ -140,7 +170,7 @@ export default function ProjectsSection() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={viewportOptions}
                     transition={{
-                      delay: pi * 0.1 + 0.15,
+                      delay: pi * 0.08 + 0.15,
                       duration: 0.6,
                       ease: [0.16, 1, 0.3, 1],
                     }}
@@ -155,25 +185,42 @@ export default function ProjectsSection() {
                   </p>
                 </div>
 
-                <motion.div
-                  className="flex flex-wrap gap-2"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={viewportOptions}
-                  variants={staggerContainer}
-                  transition={{ delayChildren: pi * 0.1 + 0.25 }}
-                >
-                  {project.tags.map((t) => (
-                    <motion.span
-                      key={t}
-                      className="tag"
-                      variants={staggerFadeUp}
-                      whileHover={{ scale: 1.05 }}
-                    >
-                      {t}
-                    </motion.span>
-                  ))}
-                </motion.div>
+                <div className="flex flex-col gap-4">
+                  <motion.div
+                    className="flex flex-wrap gap-2"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={viewportOptions}
+                    variants={staggerContainer}
+                    transition={{ delayChildren: pi * 0.08 + 0.25 }}
+                  >
+                    {project.tags.map((t) => (
+                      <motion.span
+                        key={t}
+                        className="tag"
+                        variants={staggerFadeUp}
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        {t}
+                      </motion.span>
+                    ))}
+                  </motion.div>
+
+                  <motion.a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-outline self-start"
+                    initial={{ opacity: 0, y: 8 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={viewportOptions}
+                    transition={{ delay: pi * 0.08 + 0.35, duration: 0.5 }}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    Visit site ↗
+                  </motion.a>
+                </div>
               </motion.div>
 
               {/* Right panel */}
@@ -183,33 +230,35 @@ export default function ProjectsSection() {
                 whileInView="visible"
                 viewport={viewportOptions}
                 variants={slideInRight}
-                transition={{ delay: pi * 0.1 + 0.05 }}
+                transition={{ delay: pi * 0.08 + 0.05 }}
               >
-                <motion.div
-                  className="mb-5 sm:mb-6 pl-4"
-                  style={{ borderLeft: "2px solid var(--accent)" }}
-                  initial={{ opacity: 0, scaleY: 0, originY: 0 }}
-                  whileInView={{ opacity: 1, scaleY: 1 }}
-                  viewport={viewportOptions}
-                  transition={{
-                    delay: pi * 0.1 + 0.2,
-                    duration: 0.5,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                >
-                  <p className="font-mono-label text-muted mb-1">
-                    {project.highlight.label}
-                  </p>
-                  <p
-                    style={{
-                      color: "var(--fg)",
-                      fontSize: "0.875rem",
-                      lineHeight: "1.6",
+                {project.highlight && (
+                  <motion.div
+                    className="mb-5 sm:mb-6 pl-4"
+                    style={{ borderLeft: "2px solid var(--accent)" }}
+                    initial={{ opacity: 0, scaleY: 0, originY: 0 }}
+                    whileInView={{ opacity: 1, scaleY: 1 }}
+                    viewport={viewportOptions}
+                    transition={{
+                      delay: pi * 0.08 + 0.2,
+                      duration: 0.5,
+                      ease: [0.16, 1, 0.3, 1],
                     }}
                   >
-                    {project.highlight.text}
-                  </p>
-                </motion.div>
+                    <p className="font-mono-label text-muted mb-1">
+                      {project.highlight.label}
+                    </p>
+                    <p
+                      style={{
+                        color: "var(--fg)",
+                        fontSize: "0.875rem",
+                        lineHeight: "1.6",
+                      }}
+                    >
+                      {project.highlight.text}
+                    </p>
+                  </motion.div>
+                )}
 
                 <motion.p
                   className="text-sm leading-relaxed mb-5 sm:mb-6"
@@ -217,39 +266,41 @@ export default function ProjectsSection() {
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={viewportOptions}
-                  transition={{ delay: pi * 0.1 + 0.3, duration: 0.6 }}
+                  transition={{ delay: pi * 0.08 + 0.3, duration: 0.6 }}
                 >
                   {project.description}
                 </motion.p>
 
-                <motion.ul
-                  className="space-y-2"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={viewportOptions}
-                  variants={staggerContainer}
-                  transition={{ delayChildren: pi * 0.1 + 0.35 }}
-                >
-                  {project.points.map((point) => (
-                    <motion.li
-                      key={point}
-                      className="flex items-start gap-2 text-sm"
-                      style={{ color: "var(--fg-muted)" }}
-                      variants={staggerFadeUp}
-                    >
-                      <span
-                        style={{
-                          color: "var(--accent)",
-                          marginTop: "0.15em",
-                          flexShrink: 0,
-                        }}
+                {project.points && project.points.length > 0 && (
+                  <motion.ul
+                    className="space-y-2"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={viewportOptions}
+                    variants={staggerContainer}
+                    transition={{ delayChildren: pi * 0.08 + 0.35 }}
+                  >
+                    {project.points.map((point) => (
+                      <motion.li
+                        key={point}
+                        className="flex items-start gap-2 text-sm"
+                        style={{ color: "var(--fg-muted)" }}
+                        variants={staggerFadeUp}
                       >
-                        —
-                      </span>
-                      {point}
-                    </motion.li>
-                  ))}
-                </motion.ul>
+                        <span
+                          style={{
+                            color: "var(--accent)",
+                            marginTop: "0.15em",
+                            flexShrink: 0,
+                          }}
+                        >
+                          —
+                        </span>
+                        {point}
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                )}
               </motion.div>
             </div>
           ))}

@@ -41,7 +41,7 @@ export default function Footer() {
   return (
     <footer
       id="contact"
-      className="px-4 sm:px-6 md:px-16 lg:px-24 py-14 sm:py-20"
+      className="px-4 sm:px-6 md:px-16 lg:px-24 py-14 sm:py-20 overflow-x-hidden"
       style={{ borderTop: "1px solid var(--border)" }}
     >
       <div className="max-w-6xl mx-auto w-full">
@@ -141,10 +141,7 @@ export default function Footer() {
             >
               <span style={{ color: "var(--fg-muted)" }}>{s.icon}</span>
               <span className="font-mono-label text-muted">{s.label}</span>
-              <span
-                className="text-xs truncate"
-                style={{ color: "var(--fg)" }}
-              >
+              <span className="text-xs truncate" style={{ color: "var(--fg)" }}>
                 {s.handle}
               </span>
             </motion.a>
