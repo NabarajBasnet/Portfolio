@@ -105,19 +105,6 @@ export default function AboutSection() {
                 scalable microservices. I care deeply about clean architecture,
                 reliable systems, and shipping software that actually works.
               </motion.p>
-              <motion.p
-                className="text-sm sm:text-base leading-relaxed"
-                style={{ color: "var(--fg-muted)", maxWidth: "52ch" }}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={viewportOptions}
-                transition={{ delay: 0.25, duration: 0.6 }}
-              >
-                I&apos;m the founder of Fitbinary — a suite of SaaS products for
-                gyms and fitness businesses currently live with paying clients.
-                I also contribute professionally to OnePasal as part of their
-                engineering team.
-              </motion.p>
             </div>
 
             {/* Trait grid */}
