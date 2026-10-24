@@ -1,200 +1,300 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import {
-  fadeIn,
-  fadeUp,
-  slideInRight,
-  staggerContainer,
-  staggerFadeUp,
-} from "@/lib/animations";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { EASE_OUT, gsap, MOTION_OK, splitReveal, useGsap } from "@/lib/gsap";
 
-const stats = [
-  { value: "2+", label: "Years shipping" },
-  { value: "2", label: "Apps in production" },
-  { value: "3", label: "DBs mastered" },
+const endings = [
+  "production.",
+  "real traffic.",
+  "peak hours.",
+  "the real world.",
 ];
 
-const titleWords = ["Nabaraj", "Basnet"];
+const facts = [
+  { label: "Now", value: "Frontend Developer at OnePasal" },
+  { label: "Building", value: "Fitbinary — Trainlink, Fitcloud, Fitstock" },
+  { label: "Core", value: "NestJS, gRPC, PostgreSQL, Redis, React" },
+  { label: "Next", value: "Open to full-stack & backend roles", live: true },
+];
 
-interface HeroSectionProps {
-  onViewProjects: () => void;
+function KathmanduClock() {
+  const [time, setTime] = useState<string | null>(null);
+
+  useEffect(() => {
+    const format = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Asia/Kathmandu",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+    const update = () => setTime(format.format(new Date()));
+    update();
+    const id = window.setInterval(update, 1000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  return (
+    <span className="tabular-nums text-[var(--cream)]">
+      {time ?? "--:--:--"}
+    </span>
+  );
 }
 
-export default function HeroSection({ onViewProjects }: HeroSectionProps) {
-  const sectionRef = useRef<HTMLElement>(null);
+export default function HeroSection() {
+  const ref = useRef<HTMLElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
+  useGsap(ref, (mm, root) => {
+    document.documentElement.classList.remove("hero-pending");
+
+    mm.add(MOTION_OK, () => {
+      gsap
+        .timeline({ defaults: { ease: EASE_OUT, duration: 1.2 } })
+        .from(
+          "[data-hero-media]",
+          { opacity: 0, scale: 1.1, duration: 2.6, ease: "power2.out" },
+          0,
+        )
+        .from("[data-hero-label]", { autoAlpha: 0, y: 12 }, 0.2)
+        .from("[data-hero-fade]", { autoAlpha: 0, y: 20, stagger: 0.08 }, 0.7)
+        .from(
+          "[data-row-line]",
+          {
+            scaleX: 0,
+            transformOrigin: "left center",
+            duration: 1.5,
+            stagger: 0.1,
+          },
+          0.65,
+        )
+        .from(
+          "[data-row-content]",
+          { autoAlpha: 0, x: -12, stagger: 0.06 },
+          0.85,
+        )
+        .from("[data-hero-bar]", { autoAlpha: 0, y: 10 }, 1.2);
+
+      splitReveal(root.querySelector("[data-hero-title]"), {
+        duration: 1.3,
+        stagger: 0.1,
+        delay: 0.3,
+      });
+
+      const words = gsap.utils.toArray<HTMLElement>(
+        "[data-rotator-word]",
+        root,
+      );
+      gsap.set(words.slice(1), { yPercent: 110, autoAlpha: 1 });
+      gsap.from(words[0], {
+        yPercent: 110,
+        duration: 1.3,
+        ease: EASE_OUT,
+        delay: 0.55,
+      });
+
+      const cycle = gsap.timeline({ repeat: -1, delay: 2.4 });
+      words.forEach((word, i) => {
+        const next = words[(i + 1) % words.length];
+        cycle
+          .to(
+            word,
+            { yPercent: -110, duration: 0.9, ease: "expo.inOut" },
+            "+=2.2",
+          )
+          .fromTo(
+            next,
+            { yPercent: 110 },
+            { yPercent: 0, duration: 0.9, ease: "expo.inOut" },
+            "<",
+          );
+      });
+
+      gsap.to("[data-hero-breathe]", {
+        scale: 1.07,
+        duration: 14,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+      });
+
+      gsap
+        .timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: {
+            trigger: root,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        })
+        .fromTo(
+          "[data-hero-img]",
+          { scale: 1.22, yPercent: 0, opacity: 0.6, filter: "grayscale(0%)" },
+          {
+            scale: 1.04,
+            yPercent: 30,
+            opacity: 0.85,
+            filter: "grayscale(100%)",
+          },
+          0,
+        )
+        .to("[data-hero-scrim]", { opacity: 0.5 }, 0)
+        .to("[data-hero-inner]", { y: -120, opacity: 0 }, 0);
+    });
   });
-
-  const statY = useTransform(scrollYProgress, [0, 1], [0, -60]);
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, -30]);
 
   return (
     <section
-      ref={sectionRef}
+      ref={ref}
       id="top"
-      className="min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-16 lg:px-24 pt-28 sm:pt-32 pb-16 sm:pb-20 border-b overflow-hidden"
-      style={{ borderColor: "var(--border)" }}
+      className="relative min-h-[100svh] flex flex-col overflow-hidden"
     >
-      <div className="max-w-6xl mx-auto w-full">
-        <motion.div
-          className="flex flex-wrap items-center gap-3 sm:gap-4 mb-8 sm:mb-10"
-          initial="hidden"
-          animate="visible"
-          variants={fadeIn}
-          transition={{ delay: 0.1 }}
-        >
-          <span className="font-mono-label text-muted">
-            Based in Kathmandu, Nepal
-          </span>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 items-end">
-          <motion.div style={{ y: contentY }}>
-            <h1
-              className="font-serif-heading text-[clamp(2.8rem,10vw,6.5rem)] leading-[1.05] tracking-tight mb-6 sm:mb-8"
-              style={{ color: "var(--fg)" }}
-            >
-              {titleWords.map((word, wi) => (
-                <motion.span
-                  key={word}
-                  className="inline-block overflow-hidden align-bottom"
-                  initial="hidden"
-                  animate="visible"
-                  variants={{
-                    hidden: {},
-                    visible: {
-                      transition: {
-                        staggerChildren: 0.04,
-                        delayChildren: wi * 0.18 + 0.2,
-                      },
-                    },
-                  }}
-                >
-                  {word.split("").map((char, ci) => (
-                    <motion.span
-                      key={ci}
-                      className="inline-block"
-                      style={
-                        wi === 1
-                          ? { color: "var(--accent)", fontStyle: "italic" }
-                          : {}
-                      }
-                      variants={{
-                        hidden: { y: "110%", opacity: 0 },
-                        visible: {
-                          y: "0%",
-                          opacity: 1,
-                          transition: {
-                            duration: 0.55,
-                            ease: [0.16, 1, 0.3, 1],
-                          },
-                        },
-                      }}
-                    >
-                      {char}
-                    </motion.span>
-                  ))}
-                  {wi < titleWords.length - 1 && (
-                    <span className="inline-block">&nbsp;</span>
-                  )}
-                </motion.span>
-              ))}
-            </h1>
-
-            <motion.p
-              className="text-sm sm:text-base md:text-lg max-w-xl leading-relaxed mb-8 sm:mb-10"
-              style={{ color: "var(--fg-muted)" }}
-              initial="hidden"
-              animate="visible"
-              variants={fadeUp}
-              transition={{ delay: 0.55 }}
-            >
-              Full-stack software developer building scalable microservices and
-              production-grade web applications. I care about clean
-              architecture, reliable systems, and shipping software that works.
-            </motion.p>
-
-            <motion.div
-              className="flex flex-wrap gap-3"
-              initial="hidden"
-              animate="visible"
-              variants={staggerContainer}
-              transition={{ delayChildren: 0.65 }}
-            >
-              <motion.button
-                className="btn-accent"
-                onClick={onViewProjects}
-                variants={staggerFadeUp}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                View projects
-              </motion.button>
-              <motion.a
-                href="https://www.linkedin.com/in/nabaraj-basnet-1b9216248/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-outline"
-                variants={staggerFadeUp}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Contact me
-              </motion.a>
-            </motion.div>
-          </motion.div>
-
-          {/* Stat block — full width row on mobile, sidebar on desktop */}
-          <motion.div
-            style={{ y: statY }}
-            initial="hidden"
-            animate="visible"
-            variants={slideInRight}
-            transition={{ delay: 0.4 }}
+      <div
+        aria-hidden
+        data-hero-media
+        data-hero-hide
+        className="absolute inset-0 pointer-events-none"
+      >
+        <div data-hero-breathe className="absolute inset-0">
+          <div
+            data-hero-img
+            className="absolute inset-0 scale-[1.22] opacity-60 will-change-transform"
           >
-            <div
-              className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-1 gap-px mt-10 lg:mt-0 lg:w-52"
-              style={{
-                border: "1px solid var(--border)",
-                background: "var(--border)",
-              }}
-            >
-              {stats.map((s, i) => (
-                <motion.div
-                  key={s.label}
-                  className="px-4 sm:px-5 py-3 sm:py-4"
-                  style={{ background: "var(--bg)" }}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{
-                    delay: 0.5 + i * 0.08,
-                    duration: 0.5,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
+            <Image
+              src="/nabaraj-hero.webp"
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-[50%_25%]"
+            />
+          </div>
+        </div>
+        <div data-hero-scrim className="hero-scrim absolute inset-0" />
+        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-b from-transparent to-[var(--bg)]" />
+      </div>
+
+      <div data-hero-inner className="relative flex-1 flex flex-col">
+        <div className="container-page flex-1 flex flex-col justify-center pt-32 pb-14">
+          <p data-hero-label data-hero-hide className="label mb-8 sm:mb-10">
+            Full-stack engineer · Kathmandu, Nepal
+          </p>
+
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_19rem] gap-14 lg:gap-16 items-end">
+            <div>
+              <h1
+                data-hero-hide
+                className="heading text-[clamp(2.75rem,6.4vw,5.25rem)] leading-[0.98] tracking-[-0.045em] max-w-[11em]"
+              >
+                <span data-hero-title className="block">
+                  I build software that holds up in
+                </span>
+                <span className="sr-only">{endings[0]}</span>
+                <span
+                  aria-hidden
+                  className="grid overflow-hidden pb-[0.12em] -mb-[0.12em] text-[var(--cream)]"
                 >
-                  <motion.div
-                    className="font-serif-heading text-2xl sm:text-3xl mb-0.5"
-                    style={{ color: "var(--accent)" }}
-                    initial={{ opacity: 0, scale: 0.7 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{
-                      delay: 0.6 + i * 0.08,
-                      duration: 0.4,
-                      ease: "backOut",
-                    }}
-                  >
-                    {s.value}
-                  </motion.div>
-                  <div className="font-mono-label text-muted">{s.label}</div>
-                </motion.div>
-              ))}
+                  {endings.map((ending, i) => (
+                    <span
+                      key={ending}
+                      data-rotator-word
+                      className={`[grid-area:1/1] whitespace-nowrap ${
+                        i === 0 ? "" : "invisible"
+                      }`}
+                    >
+                      {ending}
+                    </span>
+                  ))}
+                </span>
+              </h1>
+
+              <p
+                data-hero-fade
+                data-hero-hide
+                className="mt-8 max-w-[34rem] text-[1.0625rem] text-[var(--cream-muted)]"
+              >
+                Backend-first full-stack developer working in TypeScript. I
+                design the parts that have to be right — payments, queues,
+                real-time calls — and the interfaces people use on top of them.
+              </p>
+
+              <div
+                data-hero-fade
+                data-hero-hide
+                className="mt-10 flex flex-wrap gap-3"
+              >
+                <a href="#work" className="btn btn-light">
+                  View selected work <ArrowDown size={16} />
+                </a>
+                <a
+                  href="https://github.com/NabarajBasnet"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline backdrop-blur-sm"
+                >
+                  GitHub <ArrowUpRight size={15} />
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/nabaraj-basnet-1b9216248/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline backdrop-blur-sm"
+                >
+                  LinkedIn <ArrowUpRight size={15} />
+                </a>
+              </div>
             </div>
-          </motion.div>
+
+            <dl>
+              {facts.map((f) => (
+                <div
+                  key={f.label}
+                  className="relative grid grid-cols-[5.5rem_minmax(0,1fr)] gap-4 py-4"
+                >
+                  <span
+                    aria-hidden
+                    data-row-line
+                    data-hero-hide
+                    className="absolute inset-x-0 top-0 h-px bg-[var(--line-strong)]"
+                  />
+                  <dt data-row-content data-hero-hide className="label pt-px">
+                    {f.label}
+                  </dt>
+                  <dd
+                    data-row-content
+                    data-hero-hide
+                    className="flex gap-2.5 text-sm leading-relaxed text-[var(--cream)]"
+                  >
+                    {f.live && (
+                      <span className="marker mt-[0.45rem] animate-pulse" />
+                    )}
+                    {f.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+
+        <div
+          data-hero-bar
+          data-hero-hide
+          className="container-page pb-8 flex items-center justify-between gap-6"
+        >
+          <a
+            href="#about"
+            className="label inline-flex items-center gap-3 hover:text-[var(--cream)] transition-colors"
+          >
+            <span className="relative block w-10 h-px overflow-hidden bg-[var(--line-strong)]">
+              <span className="scroll-cue absolute inset-0 bg-[var(--cream)]" />
+            </span>
+            Scroll
+          </a>
+          <p className="label">
+            Kathmandu <KathmanduClock /> NPT
+          </p>
         </div>
       </div>
     </section>

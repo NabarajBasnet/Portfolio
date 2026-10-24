@@ -1,177 +1,266 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { ArrowRight } from "lucide-react";
 import {
-  fadeUp,
-  staggerContainer,
-  staggerFadeUp,
-  scaleIn,
-  viewportOptions,
-} from "@/lib/animations";
+  EASE_OUT,
+  gsap,
+  MOTION_OK,
+  revealOnScroll,
+  splitReveal,
+  useGsap,
+} from "@/lib/gsap";
+
+const HORIZONTAL =
+  "(min-width: 768px) and (min-height: 520px) and (prefers-reduced-motion: no-preference)";
 
 const skillGroups = [
   {
-    index: "01",
-    category: "Frontend",
-    skills: [
-      { name: "Next.js", note: "App Router" },
-      { name: "React", note: "Hooks, context" },
-      { name: "TypeScript", note: "Strict mode" },
-      { name: "Tailwind CSS", note: "Utility-first" },
-    ],
-  },
-  {
-    index: "02",
     category: "Backend",
+    description: "Service design, gateways, and the contracts between them.",
     skills: [
-      { name: "NestJS", note: "DI, modules" },
-      { name: "Node.js", note: "Runtime" },
-      { name: "Express.js", note: "REST" },
-      { name: "gRPC", note: "Proto + streaming" },
-      { name: "Microservices", note: "Service mesh" },
+      "NestJS",
+      "Node.js",
+      "Express.js",
+      "gRPC",
+      "Microservices",
+      "REST",
     ],
   },
   {
-    index: "03",
-    category: "Databases",
+    category: "Data",
+    description: "Relational modelling, document stores, and caching.",
+    skills: ["PostgreSQL", "TypeORM", "MongoDB", "Redis"],
+  },
+  {
+    category: "Async & real-time",
+    description: "Queues, scheduled jobs, live chat, and video calls.",
+    skills: ["BullMQ", "WebSockets", "Socket.io", "WebRTC"],
+  },
+  {
+    category: "Frontend & mobile",
+    description: "Web and React Native apps on top of the APIs.",
     skills: [
-      { name: "PostgreSQL", note: "Per-service" },
-      { name: "MongoDB", note: "Document model" },
-      { name: "Redis", note: "Cache + streams and more" },
+      "React",
+      "Next.js",
+      "React Native (Expo)",
+      "TypeScript",
+      "Tailwind CSS",
     ],
   },
   {
-    index: "04",
-    category: "Infrastructure",
+    category: "Payments & infra",
+    description: "Marketplace payments, storage, and shipping it.",
     skills: [
-      { name: "Docker", note: "Compose + images" },
-      { name: "Turborepo", note: "Monorepo" },
-      { name: "pnpm", note: "Workspaces" },
-      { name: "GitHub Actions", note: "CI/CD" },
+      "Stripe",
+      "Stripe Connect",
+      "AWS S3",
+      "Docker",
+      "VPS deploys",
+      "GitHub Actions",
     ],
   },
   {
-    index: "05",
-    category: "Real-time & APIs",
+    category: "System design",
+    description: "The patterns that keep it correct under real traffic.",
     skills: [
-      { name: "Socket.io", note: "Bidirectional" },
-      { name: "REST", note: "OpenAPI" },
-      { name: "Redis Streams", note: "Event bus" },
-    ],
-  },
-  {
-    index: "06",
-    category: "System Design",
-    skills: [
-      { name: "Service boundaries", note: "DDD" },
-      { name: "Event-driven", note: "Pub/sub" },
-      { name: "JWT auth", note: "Refresh rotation" },
-      { name: "API Gateway", note: "Single ingress" },
+      "Multi-tenancy",
+      "RBAC",
+      "ACID transactions",
+      "Idempotency",
+      "Event-driven design",
+      "API gateway",
     ],
   },
 ];
 
+const pad = (n: number) => String(n).padStart(2, "0");
+
 export default function SkillsSection() {
+  const ref = useRef<HTMLElement>(null);
+
+  useGsap(ref, (mm, section) => {
+    mm.add({ horizontal: HORIZONTAL, motion: MOTION_OK }, (ctx) => {
+      const { horizontal, motion } = ctx.conditions as Record<string, boolean>;
+      if (!motion) return;
+
+      splitReveal(section.querySelector("h2"), {
+        scrollTrigger: { trigger: section, start: "top 70%" },
+      });
+
+      if (!horizontal) {
+        revealOnScroll(section);
+        return;
+      }
+
+      section.dataset.layout = "horizontal";
+      const pin = section.querySelector<HTMLElement>("[data-pin]")!;
+      const track = section.querySelector<HTMLElement>("[data-track]")!;
+      const panels = gsap.utils.toArray<HTMLElement>("[data-skill]", track);
+      const bar = section.querySelector("[data-progress-bar]");
+      const counter = section.querySelector("[data-progress-count]");
+      const distance = () => Math.max(0, track.scrollWidth - pin.clientWidth);
+
+      const updateProgress = () => {
+        const max = distance();
+        const progress = max ? -Number(gsap.getProperty(track, "x")) / max : 0;
+        gsap.set(bar, { scaleX: progress });
+        if (counter) {
+          counter.textContent = pad(
+            Math.round(progress * (panels.length - 1)) + 1,
+          );
+        }
+      };
+
+      const scrollTween = gsap.to(track, {
+        x: () => -distance(),
+        ease: "none",
+        onUpdate: updateProgress,
+        scrollTrigger: {
+          trigger: pin,
+          pin: true,
+          start: "top top",
+          end: () => `+=${distance()}`,
+          scrub: 0.8,
+          invalidateOnRefresh: true,
+          anticipatePin: 1,
+        },
+      });
+
+      gsap.from(section.querySelectorAll("[data-intro-fade]"), {
+        opacity: 0,
+        y: 16,
+        duration: 1.1,
+        ease: EASE_OUT,
+        stagger: 0.08,
+        delay: 0.2,
+        scrollTrigger: { trigger: section, start: "top 70%" },
+      });
+
+      panels.forEach((panel) => {
+        const visibleAtStart = panel.offsetLeft < pin.clientWidth * 0.85;
+        gsap.from(panel.querySelectorAll("[data-skill-item]"), {
+          y: 36,
+          opacity: 0,
+          duration: 1,
+          ease: EASE_OUT,
+          stagger: 0.06,
+          scrollTrigger: visibleAtStart
+            ? { trigger: section, start: "top 60%" }
+            : {
+                trigger: panel,
+                containerAnimation: scrollTween,
+                start: "left 85%",
+                toggleActions: "play none none reverse",
+              },
+        });
+        gsap.fromTo(
+          panel.querySelector("[data-skill-index]"),
+          { xPercent: 35 },
+          {
+            xPercent: -35,
+            ease: "none",
+            scrollTrigger: {
+              trigger: panel,
+              containerAnimation: scrollTween,
+              start: "left right",
+              end: "right left",
+              scrub: true,
+            },
+          },
+        );
+      });
+
+      return () => {
+        delete section.dataset.layout;
+      };
+    });
+  });
+
   return (
     <section
-      id="skills"
-      className="px-4 sm:px-6 md:px-16 lg:px-24 py-16 sm:py-24 border-b overflow-x-hidden"
-      style={{ borderColor: "var(--border)" }}
+      ref={ref}
+      id="stack"
+      data-scroll-offset="0"
+      className="skills relative"
     >
-      <div className="max-w-6xl mx-auto w-full">
-        <motion.div
-          className="flex items-start gap-4 sm:gap-6 mb-10 sm:mb-16"
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOptions}
-          variants={fadeUp}
-        >
-          <span className="font-mono-label text-muted pt-1 shrink-0">
-            03 ——
-          </span>
-          <div>
-            <h2
-              className="font-serif-heading text-[clamp(1.8rem,5vw,3.5rem)] leading-tight"
-              style={{ color: "var(--fg)" }}
-            >
-              Technical Skills
+      <div data-pin className="skills-pin py-24 sm:py-32">
+        <div className="container-page">
+          <div className="flex items-center justify-between gap-6 pb-4 border-b border-[var(--line-strong)]">
+            <p className="label">04 — Stack</p>
+            <div className="skills-progress items-center gap-4">
+              <span className="label tabular-nums">
+                <span data-progress-count>01</span> / {pad(skillGroups.length)}
+              </span>
+              <span className="relative block w-32 h-[2px] bg-[var(--line-strong)]">
+                <span
+                  data-progress-bar
+                  className="absolute inset-0 origin-left scale-x-0 bg-[var(--cherry)]"
+                />
+              </span>
+            </div>
+            <p className="skills-static label">{skillGroups.length} areas</p>
+          </div>
+        </div>
+
+        <div data-track className="skills-track container-page mt-10 sm:mt-14">
+          <div className="skills-intro">
+            <h2 className="heading text-[clamp(2.1rem,4vw,3.4rem)]">
+              The toolkit behind it.
             </h2>
-            <p className="font-mono-label text-muted mt-2">
-              Tools selected for shipping reliable, scalable systems
+            <p
+              data-intro-fade
+              className="mt-6 max-w-[36ch] text-[1.0625rem] text-[var(--cream-muted)]"
+            >
+              What I reach for when a system needs to be correct first and fast
+              second.
+            </p>
+            <p
+              data-intro-fade
+              className="skills-progress label mt-auto pt-10 items-center gap-3"
+            >
+              Keep scrolling <ArrowRight size={14} />
             </p>
           </div>
-        </motion.div>
 
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-          style={{
-            borderTop: "1px solid var(--border)",
-            borderLeft: "1px solid var(--border)",
-          }}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOptions}
-          variants={staggerContainer}
-        >
-          {skillGroups.map((group) => (
-            <motion.div
-              key={group.index}
-              className="p-5 sm:p-6 lg:p-8"
-              style={{
-                borderRight: "1px solid var(--border)",
-                borderBottom: "1px solid var(--border)",
-                background: "var(--card-bg)",
-              }}
-              variants={scaleIn}
-              whileHover={{
-                background: "rgba(197,248,42,0.04)",
-                transition: { duration: 0.2 },
-              }}
+          {skillGroups.map((group, i) => (
+            <article
+              key={group.category}
+              data-skill
+              data-reveal
+              className="skill-panel relative flex flex-col justify-between gap-10 overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-6 sm:p-8"
             >
-              <div className="flex items-center gap-3 mb-4 sm:mb-5">
-                <motion.span
-                  className="font-mono-label"
-                  style={{ color: "var(--accent)" }}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={viewportOptions}
-                  transition={{ duration: 0.4 }}
-                >
-                  {group.index}
-                </motion.span>
+              <span
+                aria-hidden
+                data-skill-index
+                className="pointer-events-none absolute -right-2 -top-8 select-none text-[9rem] font-semibold leading-none tracking-[-0.06em] text-white/[0.04]"
+              >
+                {pad(i + 1)}
+              </span>
+              <div className="relative">
+                <p data-skill-item className="label">
+                  {pad(i + 1)} / {pad(skillGroups.length)}
+                </p>
                 <h3
-                  className="font-serif-heading text-base sm:text-lg"
-                  style={{ color: "var(--fg)" }}
+                  data-skill-item
+                  className="heading mt-6 text-[clamp(1.75rem,2.6vw,2.4rem)]"
                 >
                   {group.category}
                 </h3>
+                <p data-skill-item className="mt-3 text-[var(--cream-muted)]">
+                  {group.description}
+                </p>
               </div>
-
-              <motion.ul
-                className="space-y-2 sm:space-y-3"
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportOptions}
-                variants={staggerContainer}
-              >
+              <ul data-skill-item className="relative flex flex-wrap gap-1.5">
                 {group.skills.map((s) => (
-                  <motion.li
-                    key={s.name}
-                    className="flex items-center justify-between gap-2"
-                    variants={staggerFadeUp}
-                  >
-                    <span className="text-sm" style={{ color: "var(--fg)" }}>
-                      {s.name}
-                    </span>
-                    <span className="font-mono-label text-muted shrink-0">
-                      {s.note}
-                    </span>
-                  </motion.li>
+                  <li key={s} className="chip">
+                    {s}
+                  </li>
                 ))}
-              </motion.ul>
-            </motion.div>
+              </ul>
+            </article>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

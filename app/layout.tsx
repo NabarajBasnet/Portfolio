@@ -1,6 +1,7 @@
 import "./globals.css";
-import { Instrument_Serif, Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import type { Metadata } from "next";
+import LenisProvider from "@/components/providers/LenisProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,15 +15,9 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
-
 const BASE_URL = "https://nabarajbasnet.com.np";
+
+const heroPendingScript = `document.documentElement.classList.add("hero-pending");setTimeout(function(){document.documentElement.classList.remove("hero-pending")},2500);`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -47,8 +42,9 @@ export const metadata: Metadata = {
     "microservices developer",
     "software developer Kathmandu",
     "Fitbinary",
-    "FitStock",
-    "FitCloud",
+    "Trainlink",
+    "Fitstock",
+    "Fitcloud",
     "OnePasal developer",
     "gRPC developer",
     "Node.js developer Nepal",
@@ -108,9 +104,7 @@ export const metadata: Metadata = {
   category: "technology",
 
   icons: {
-    icon: [
-      { url: "/favicon.ico", type: "image/x-icon" },
-    ],
+    icon: [{ url: "/favicon.ico", type: "image/x-icon" }],
     apple: "/og-image.png",
     shortcut: "/favicon.ico",
   },
@@ -162,17 +156,16 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: heroPendingScript }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
-      >
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <LenisProvider>{children}</LenisProvider>
       </body>
     </html>
   );

@@ -1,150 +1,169 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { Menu, X } from "lucide-react";
+import { EASE_OUT, gsap, MOTION_OK, ScrollTrigger, useGsap } from "@/lib/gsap";
 
 const navLinks = [
-  { label: "Skills", index: "01", href: "#skills" },
-  { label: "Work", index: "02", href: "#projects" },
-  { label: "Contact", index: "03", href: "#contact" },
+  { label: "Work", id: "work", index: "02" },
+  { label: "Experience", id: "experience", index: "03" },
+  { label: "Stack", id: "stack", index: "04" },
+  { label: "Contact", id: "contact", index: "05" },
 ];
 
 export default function Navbar() {
+  const headerRef = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handler, { passive: true });
-    return () => window.removeEventListener("scroll", handler);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const scrollTo = (href: string) => {
-    setMenuOpen(false);
-    const id = href.replace("#", "");
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
+  useGsap(headerRef, (mm, header) => {
+    mm.add("all", () => {
+      navLinks.forEach(({ id }) => {
+        const section = document.getElementById(id);
+        if (!section) return;
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top 45%",
+          end: "bottom 45%",
+          onToggle: (self) =>
+            setActive((current) =>
+              self.isActive ? id : current === id ? null : current,
+            ),
+        });
+      });
+
+      gsap.fromTo(
+        header.querySelector("[data-progress]"),
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          ease: "none",
+          scrollTrigger: { start: 0, end: "max", scrub: 0.3 },
+        },
+      );
+    });
+
+    mm.add(MOTION_OK, () => {
+      gsap.fromTo(
+        header,
+        { autoAlpha: 0, y: -16 },
+        { autoAlpha: 1, y: 0, duration: 1.1, ease: EASE_OUT, delay: 0.1 },
+      );
+    });
+  });
+
+  const solid = scrolled || menuOpen;
 
   return (
-    <motion.header
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 overflow-hidden"
-      style={{
-        borderBottom: "1px solid var(--border)",
-        background: scrolled ? "rgba(8,8,8,0.92)" : "transparent",
-        backdropFilter: scrolled ? "blur(12px)" : "none",
-      }}
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+    <header
+      ref={headerRef}
+      data-hero-hide
+      className="fixed top-0 inset-x-0 z-50"
     >
-      <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 md:px-16 lg:px-24 h-16 flex items-center justify-between">
-        <motion.button
-          onClick={() => scrollTo("#top")}
-          className="font-mono-label flex items-center gap-1"
-          style={{ color: "var(--fg)" }}
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.97 }}
-        >
-          <span
-            className="w-5 h-5 rounded-sm flex items-center justify-center text-xs font-bold"
-            style={{ background: "var(--accent)", color: "var(--bg)" }}
+      <div
+        className={`relative border-b transition-colors duration-300 ${
+          solid
+            ? "bg-[rgba(39,39,42,0.82)] backdrop-blur-xl border-[var(--line)]"
+            : "border-transparent"
+        }`}
+      >
+        <div className="container-page h-[4.5rem] flex items-center justify-between gap-4 md:grid md:grid-cols-[1fr_auto_1fr]">
+          <a
+            href="#top"
+            onClick={() => setMenuOpen(false)}
+            className="justify-self-start inline-flex items-center gap-2.5 rounded-lg border border-[var(--line-strong)] py-1.5 pl-1.5 pr-3 hover:bg-[var(--surface)] transition-colors"
           >
-            N
-          </span>
-          <span>Nabaraj</span>
-        </motion.button>
+            <Image
+              src="/icon-96.webp"
+              alt=""
+              width={26}
+              height={26}
+              className="rounded-full"
+              priority
+            />
+            <span className="whitespace-nowrap text-sm font-medium text-[var(--white)]">
+              Nabaraj Basnet
+            </span>
+          </a>
 
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link, i) => (
-            <motion.button
-              key={link.label}
-              onClick={() => scrollTo(link.href)}
-              className="font-mono-label flex items-center gap-1.5"
-              style={{ color: "var(--fg-muted)" }}
-              initial={{ opacity: 0, y: -12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 + i * 0.07, duration: 0.5 }}
-              whileHover={{ color: "var(--fg)", y: -1 }}
-            >
-              <span style={{ color: "var(--accent)" }}>{link.index}</span>
-              {link.label}
-            </motion.button>
-          ))}
-        </nav>
-
-        <motion.a
-          href="mailto:nabarajbasnet2000@gmail.com"
-          className="btn-outline hidden md:inline-flex"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.96 }}
-        >
-          Contact
-        </motion.a>
-
-        <button
-          className="md:hidden font-mono-label"
-          style={{ color: "var(--fg)" }}
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.span
-              key={menuOpen ? "close" : "open"}
-              initial={{ opacity: 0, rotate: -90 }}
-              animate={{ opacity: 1, rotate: 0 }}
-              exit={{ opacity: 0, rotate: 90 }}
-              transition={{ duration: 0.2 }}
-            >
-              {menuOpen ? "✕" : "☰"}
-            </motion.span>
-          </AnimatePresence>
-        </button>
-      </div>
-
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            className="md:hidden border-t overflow-hidden"
-            style={{
-              borderColor: "var(--border)",
-              background: "rgba(8,8,8,0.97)",
-            }}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {navLinks.map((link, i) => (
-              <motion.button
-                key={link.label}
-                onClick={() => scrollTo(link.href)}
-                className="w-full flex items-center gap-3 px-6 py-4 font-mono-label text-left"
-                style={{
-                  borderBottom: "1px solid var(--border)",
-                  color: "var(--fg-muted)",
-                }}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.06, duration: 0.35 }}
-              >
-                <span style={{ color: "var(--accent)" }}>{link.index}</span>
-                {link.label}
-              </motion.button>
-            ))}
-            <div className="px-6 py-4">
+          <nav className="hidden md:flex items-center gap-1" aria-label="Main">
+            {navLinks.map(({ label, id }) => (
               <a
-                href="mailto:nabarajbasnet2000@gmail.com"
-                className="btn-accent w-full justify-center"
+                key={id}
+                href={`#${id}`}
+                aria-current={active === id ? "true" : undefined}
+                className={`relative px-3 py-2 text-sm transition-colors ${
+                  active === id
+                    ? "text-[var(--white)]"
+                    : "text-[var(--cream-muted)] hover:text-[var(--white)]"
+                }`}
               >
-                Contact
+                {label}
+                <span
+                  aria-hidden
+                  className={`absolute left-1/2 bottom-0.5 -translate-x-1/2 w-1 h-1 bg-[var(--cherry)] transition-opacity ${
+                    active === id ? "opacity-100" : "opacity-0"
+                  }`}
+                />
               </a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
+            ))}
+          </nav>
+
+          <div className="justify-self-end flex items-center gap-2">
+            <a
+              href="#contact"
+              className="btn btn-outline btn-sm hidden md:inline-flex"
+            >
+              Get in touch
+            </a>
+            <button
+              className="md:hidden w-10 h-10 rounded-lg border border-[var(--line-strong)] flex items-center justify-center text-[var(--white)]"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
+              aria-expanded={menuOpen}
+            >
+              {menuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
+        </div>
+
+        <div
+          className={`md:hidden grid transition-[grid-template-rows] duration-300 ease-out ${
+            menuOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+          }`}
+        >
+          <div className="overflow-hidden">
+            <nav className="container-page pb-4" aria-label="Mobile">
+              {navLinks.map(({ label, id, index }) => (
+                <a
+                  key={id}
+                  href={`#${id}`}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center justify-between py-3.5 border-t border-[var(--line)] text-[var(--cream)]"
+                >
+                  {label}
+                  <span className="label">{index}</span>
+                </a>
+              ))}
+            </nav>
+          </div>
+        </div>
+
+        <span
+          aria-hidden
+          data-progress
+          className="absolute left-0 -bottom-px h-[2px] w-full origin-left scale-x-0 bg-[var(--cherry)]"
+        />
+      </div>
+    </header>
   );
 }
