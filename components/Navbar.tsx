@@ -72,7 +72,7 @@ export default function Navbar() {
       <div
         className={`relative border-b transition-colors duration-300 ${
           solid
-            ? "bg-[rgba(39,39,42,0.82)] backdrop-blur-xl border-[var(--line)]"
+            ? "bg-[rgba(9,9,11,0.8)] backdrop-blur-xl border-[var(--line)]"
             : "border-transparent"
         }`}
       >

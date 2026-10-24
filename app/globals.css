@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --bg: #27272a;
-  --surface: #2e2e32;
-  --surface-2: #36363b;
+  --bg: #09090b;
+  --surface: #18181b;
+  --surface-2: #27272a;
   --line: rgba(255, 255, 255, 0.08);
   --line-strong: rgba(255, 255, 255, 0.15);
 
@@ -276,15 +276,15 @@ html.lenis body {
   .hero-scrim {
     background: linear-gradient(
       90deg,
-      rgba(39, 39, 42, 0.94) 0%,
-      rgba(39, 39, 42, 0.8) 45%,
-      rgba(39, 39, 42, 0.62) 100%
+      rgba(9, 9, 11, 0.94) 0%,
+      rgba(9, 9, 11, 0.8) 45%,
+      rgba(9, 9, 11, 0.62) 100%
     );
   }
 
   @media (max-width: 767px) {
     .hero-scrim {
-      background: rgba(39, 39, 42, 0.8);
+      background: rgba(9, 9, 11, 0.8);
     }
   }
 

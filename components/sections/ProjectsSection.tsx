@@ -30,7 +30,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       <div
         aria-hidden
         data-card-shade
-        className="pointer-events-none absolute inset-0 z-10 bg-[#0b0b0c] opacity-0"
+        className="pointer-events-none absolute inset-0 z-10 bg-black opacity-0"
       />
 
       <div className="p-6 sm:p-8 lg:p-10">
