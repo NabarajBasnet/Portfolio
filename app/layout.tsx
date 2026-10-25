@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "Nabaraj Basnet is a full-stack software developer from Kathmandu, Nepal, specializing in NestJS microservices, PostgreSQL, gRPC, React, and Next.js. Building Fitbinary — a live SaaS platform for gym businesses.",
+    "Nabaraj Basnet is a full-stack software developer from Kathmandu, Nepal, specializing in NestJS microservices, PostgreSQL, gRPC, React, and Next.js. Building Fitbinary — apps for gyms, trainers, and multi-branch businesses.",
 
   keywords: [
     "Nabaraj Basnet",

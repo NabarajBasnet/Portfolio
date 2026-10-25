@@ -126,7 +126,7 @@ export const projects: Project[] = [
   {
     id: "fitcloud",
     name: "Fitcloud",
-    tagline: "Gym management SaaS",
+    tagline: "Gym management app",
     summary:
       "Multi-tenant gym management platform with apps for gym owners, staff, and members. Live on the Play Store and in use by real gyms.",
     status: "Live on Play Store",
@@ -145,7 +145,7 @@ export const projects: Project[] = [
     stack: ["NestJS", "TypeScript", "MongoDB", "Mobile app"],
     highlights: [
       {
-        title: "Multi-tenant SaaS",
+        title: "One platform, many gyms",
         text: "Multiple gyms run on a single platform with isolated data.",
       },
       {
@@ -158,7 +158,7 @@ export const projects: Project[] = [
       },
       {
         title: "Architecture evolution",
-        text: "Grew from single-gym software to a multi-tenant SaaS to a microservices-based platform under Fitbinary.",
+        text: "Grew from software for a single gym into one platform serving many gyms, then into microservices under Fitbinary.",
       },
       {
         title: "Membership lifecycle",
@@ -169,7 +169,7 @@ export const projects: Project[] = [
   {
     id: "fitstock",
     name: "Fitstock",
-    tagline: "Multi-branch inventory management SaaS",
+    tagline: "Multi-branch inventory management",
     summary:
       "Inventory and sales platform for businesses that operate multiple branches. Live on the Play Store.",
     status: "Live on Play Store",

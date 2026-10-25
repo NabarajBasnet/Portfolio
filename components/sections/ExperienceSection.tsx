@@ -51,7 +51,7 @@ const roles: Role[] = [
     summary:
       "Fitbinary is the umbrella for everything I build independently. I own each product end to end — architecture, backend, mobile apps, deployment, and support for the businesses using them.",
     points: [
-      "Grew Fitcloud from single-gym software into a multi-tenant SaaS, then a microservices platform",
+      "Grew Fitcloud from software for one gym into a platform for many gyms, then into microservices",
       "Shipped Trainlink, Fitcloud, and Fitstock to the Play Store",
       "Run the shared platform: auth/admin and notification services, Dockerized on a VPS",
     ],
